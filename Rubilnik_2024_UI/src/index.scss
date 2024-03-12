@@ -46,10 +46,10 @@ body,
       box-sizing: border-box;
       align-self: flex-start;
     }
-
-    .ViewQuestionList {
-      max-width: 8cm
+    .ViewProfile, .ViewJoin{
+      align-self: center
     }
+
 
     .ViewLibrary {
       @extend .view;
@@ -146,6 +146,7 @@ body,
       border: 0;
       fill: hsla(50%, 0, 50, 50%);
       transition: .3s;
+      width: 100%;
 
       &.selected {
         fill: var(--color-acc);
@@ -162,7 +163,7 @@ button {
   color: black;
   fill: var(--color-acc);
   color: var(--color-text);
-  width: 100%;
+  width: fit-content;
   padding: .2cm;
   border-radius: .15cm;
   /* cursor: pointer; */
@@ -203,6 +204,7 @@ h6 {
 
 .view {
   width: 100%;
+  max-width: 30cm;
   border: 4px pink;
   height: fit-content;
   display: flex;
@@ -210,11 +212,7 @@ h6 {
   box-sizing: border-box;
   align-items: center;
   input{
-    width: 100%;
     text-align: center
-  }
-  button{
-    width: 100%
   }
 }
 

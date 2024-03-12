@@ -32,14 +32,11 @@ export const ViewLibrary = (args) => {
 
                 {user.quizzes?.map((quiz, index) => {
                     return (
-                        <div className='hstack'>
+                        <div className='hstack' style={{width:'100%'}}>
                             <button onClick={()=>{
-                                args.set_view( ()=>()=>ViewQuestionList( {set_view: args.set_view, questions: quiz.questions} ) )
+                                args.set_view( ()=>()=>ViewQuestionList( {set_view: args.set_view, questions: quiz.questions, quiz} ) )
                             }} className='tile'> {quiz.title}
                             </button>
-                            <button onClick={()=>{
-                                
-                            }}>rename</button>
                             <button onClick={()=>{
                                 user.quizzes.splice(index, 1);
                                 update()

@@ -1,28 +1,36 @@
 import { useState } from "react"
 import { ViewQuestionEdit } from "./ViewQuestionEdit"
-import { ViewQuizEdit } from "./ViewQuizEdit"
-import { Question } from "./classes.mjs"
+import { Question, Quiz } from "./classes.mjs"
 import { SERVER_URL } from "./App"
 import play_svg from  "./assets/play.svg"
 import add_svg from  "./assets/add.svg"
+import delete_svg from "./assets/delete.svg"
 import { Footer } from "./Footer"
 
 /**
  * 
- * @param {{set_view, questions: Question[]}} args 
+ * @param {{set_view, quiz:Quiz}} args 
  */
-export const ViewQuestionList = (args)=>{
+export const ViewQuestionList = ({set_view,quiz})=>{
     const [flag, set_flag] = useState(false)
     function update() {
         set_flag(!flag)
     }
     return(
         <div className="ViewQuestionList">
-            {args.questions.map((question,index)=>
-                <div className="hstack">
+
+            <h3>Quiz title</h3>
+            <input type="text" value={quiz.title} onChange={v=>{
+                quiz.title = v.target.value
+                update()
+            }} style={{width:'100%'}}/>
+
+            <h3>Questions</h3>
+            {quiz.questions.map((question,index)=>
+                <div className="hstack" style={{width:'100%'}}>
                     <button onClick={()=>{
-                        args.set_view(()=>()=>ViewQuestionEdit({question, index})) 
-                    }}>
+                        set_view(()=>()=>ViewQuestionEdit({set_view, question, quiz})) 
+                    }} style={{flexGrow:1}}>
                         <div className="listItem hstack">
                             {index+1}
                             <div className="spacer-default"></div>
@@ -30,9 +38,10 @@ export const ViewQuestionList = (args)=>{
                         </div>
                     </button>
                     <button onClick={()=>{
-                        args.questions.splice(index, 1)
+                        quiz.questions.splice(index, 1)
                         update()
-                    }}><svg className='icon' xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"/></svg></button>
+                    }}>
+                        <img src={delete_svg} className="icon" alt="" /></button>
                 </div>
             )}
 
@@ -42,27 +51,18 @@ export const ViewQuestionList = (args)=>{
                 <div className="buttons-container">
 
                     <button onClick={()=>{
-                        console.log(args.questions);
-                        args.questions.push(new Question('new',[]))
+                        console.log(quiz.questions);
+                        quiz.questions.push(new Question('new',[]))
                         update()
                     }}><img src={add_svg} className="icon"/></button>
                     <button onClick={()=>{
-                        fetch(SERVER_URL+'/hi', {
+                        fetch(SERVER_URL+'/start', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json'},
-                            body: JSON.stringify({message: 'hi'})
+                            body: JSON.stringify({ quiz })
                         }).then(res=>{
                             res.ok? alert('ok') : alert('fail')
-                        }).catch(e=>{console.log(e.message);})
-                    }}>Hi</button>
-                    <button onClick={()=>{
-                        fetch(SERVER_URL+'/', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json'},
-                            body: JSON.stringify({message: 'hi'})
-                        }).then(res=>{
-                            res.ok? alert('ok') : alert('fail')
-                        }).catch(e=>{console.log(e.message);})
+                        }).catch(e=>{console.log(e.message); alert(e.message)})
                     }}><img src={play_svg} className="icon"/></button>
                 </div>
             </Footer>

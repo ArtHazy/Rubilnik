@@ -10,21 +10,19 @@ export const ViewJoin = (args) => {
 
     return (
         <div className='ViewJoin vstack'>
-                <div className='view' style={{width:'50%'}}>
-                    <div>Name</div>
-                    <div className="spacer-default" />
-                    <input value={user.name} maxLength={limits.maxNameLength} onChange={(e)=>{
-                        user.name = e.target.value;
-                        update()
-                    }}/>
+            <div>Name</div>
+            <div className="spacer-default" />
+            <input value={user.name} maxLength={limits.maxNameLength} onChange={(e)=>{
+                user.name = e.target.value;
+                update()
+            }}/>
 
-                    <div className="spacer-default" />
-                    <div>Room</div>
-                    <div className="spacer-default" />
-                    <input placeholder="room key" minLength={limits.roomKeyLength} maxLength={limits.roomKeyLength} />
-                    <div className="spacer-default" />
-                    <button>Join</button>
-                </div>
+            <div className="spacer-default" />
+            <div>Room</div>
+            <div className="spacer-default" />
+            <input placeholder="room key" minLength={limits.roomKeyLength} maxLength={limits.roomKeyLength} />
+            <div className="spacer-default" />
+            <button>Join</button>
         </div>
     );
 };
