@@ -1,0 +1,244 @@
+:root {
+  --color-acc: rgba(150, 180, 240);
+  --color-acc-faded: rgba(150, 180, 240, 0.8);
+  --color-bg: rgb(41, 43, 61);
+  --color-text: rgba(230, 230, 240);
+  --color-bg2: rgba(50, 60, 80);
+  --color-hd-ft: rgb(28, 32, 47);
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  background-color: var(--color-bg)
+}
+
+.full-screen {
+  width: 100%;
+  height: 100%;
+}
+
+.App {
+  @extend .full-screen;
+  @extend .vstack;
+  margin-bottom: auto;
+  box-sizing: border-box;
+  overflow: hidden;
+  /* justify-content: center; */
+  align-items: center;
+
+  .view-container {
+    @extend .hstack;
+    width: 100%;
+    flex-grow: 1;
+    overflow: scroll;
+    padding: .5cm;
+    padding-bottom: 4cm;
+    box-sizing: border-box;
+
+    .ViewProfile, .ViewJoin, .ViewQuizEdit, .ViewQuestionEdit, .ViewQuestionList{
+      @extend .view;
+      box-sizing: border-box;
+      align-self: flex-start;
+    }
+
+    .ViewQuestionList {
+      max-width: 8cm
+    }
+
+    .ViewLibrary {
+      @extend .view;
+      @extend .vstack;
+      justify-content: center;
+      max-width: 30cm;
+      flex-grow: 1;
+
+      .grid-tile-container {
+        display: grid;
+        gap: .5cm;
+        justify-items: center;
+        grid-template-columns: repeat(auto-fit, minmax(4.4cm, 1fr));
+      }
+      .tile {
+        width: 100%;
+        height: fit-content;
+        min-height: 2cm;
+        max-width: 12cm;
+        text-align: center;
+        border-radius: 8px;
+        padding: 8px;
+        //overflow: scroll;
+        box-sizing: border-box;
+        color: white;
+        background-color: var(--color-bg2);
+      }
+    }
+  }
+}
+.ViewLogin,
+.ViewRegister {
+  @extend .full-screen;
+  @extend .vstack;
+  margin: 0 auto;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+.Header {
+  @extend .vstack;
+  position: sticky;
+  box-sizing: border-box;
+  top: 0;
+  // border-radius: 0px 0px 8px 8px;
+  width: 100%;
+  flex-grow: 0;
+  justify-content: space-evenly;
+
+  .header-content-container {
+    @extend .hstack;
+    color: white;
+    fill: white;
+    background: var(--color-hd-ft);
+    padding: 8px;
+    box-sizing: border-box;
+    // border-radius: 8px;
+    width: 100%;
+    justify-content: space-evenly;
+  }
+}
+
+.Footer {
+  @extend .vstack;
+  width: fit-content;
+  min-width: 6cm;
+  box-sizing: border-box;
+  position: absolute;
+  bottom: .5cm;
+  color: white;
+  fill: white;
+  justify-content: space-evenly;
+  align-items: center;
+  align-self: center;
+
+  .buttons-container {
+    @extend .hstack;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 6cm;
+    padding: 8px;
+    background: var(--color-hd-ft);
+    border-radius: 8px 8px 8px 8px;
+    justify-content: space-evenly;
+    align-items: center;
+
+    button {
+      @extend .vstack;
+      padding: .2em;
+      box-sizing: border-box;
+      border: 0;
+      fill: hsla(50%, 0, 50, 50%);
+      transition: .3s;
+
+      &.selected {
+        fill: var(--color-acc);
+        transition: .3s;
+        scale: 1.2;
+      }
+    }
+  }
+}
+
+button {
+  background-color: var(--color-acc-faded);
+  border: 0px solid whitesmoke;
+  color: black;
+  fill: var(--color-acc);
+  color: var(--color-text);
+  width: 100%;
+  padding: .2cm;
+  border-radius: .15cm;
+  /* cursor: pointer; */
+}
+
+input, select{
+  background: transparent;
+  color: var(--color-text);
+  fill: var(--color-text);
+  border: 2px solid var(--color-acc-faded) !important;
+  padding: 4px !important;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+div,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--color-text);
+}
+
+.vstack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hstack {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.view {
+  width: 100%;
+  border: 4px pink;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  align-items: center;
+  input{
+    width: 100%;
+    text-align: center
+  }
+  button{
+    width: 100%
+  }
+}
+
+
+
+
+.icon {
+  width: 2em;
+  height: 2em;
+  flex-shrink: 0;
+}
+
+.picture {
+  width: 4em;
+  height: 4em;
+  flex-shrink: 0;
+  border-radius: 100%;
+}
+
+.tile-container {
+  padding: 8px;
+}
+
+.spacer-default {
+  width: .3cm;
+  height: .3cm;
+}
