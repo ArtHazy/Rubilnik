@@ -1,12 +1,14 @@
-import { limits, store_user, user } from './data.mjs';
+import { limits, local_store_user, user } from '../data.mjs';
 import { useState } from 'react';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 export const ViewJoin = (args) => {
 
     const [flag, set_flag] = useState(false)
-    function update(){ store_user(user); set_flag(!flag);}
+    let navigate = useNavigate()
+    function update(){ local_store_user(user); set_flag(!flag);}
 
     return (
         <div className='ViewJoin vstack'>

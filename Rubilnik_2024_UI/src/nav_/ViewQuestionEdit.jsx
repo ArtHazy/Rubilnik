@@ -1,11 +1,12 @@
-import { Choice, Question, Quiz } from './classes.mjs';
+import { Choice, Question, Quiz } from '../classes.mjs';
 import { useState } from 'react';
 import React from 'react';
-import { alert_limit, limits,store_user,user } from './data.mjs';
+import { alert_limit, limits,local_store_user,user } from '../data.mjs';
 import { ViewQuestionList } from './ViewQuestionList';
 import { Footer } from './Footer';
-import addSvg from './assets/add.svg'
-import deleteSvg from './assets/delete.svg'
+import addSvg from '../assets/add.svg'
+import deleteSvg from '../assets/delete.svg'
+import { useNavigate } from 'react-router-dom';
 
 /**
  * @param {{set_view, question:Question, quiz:Quiz}} args 
@@ -13,8 +14,9 @@ import deleteSvg from './assets/delete.svg'
  */
 export const ViewQuestionEdit = ({set_view, question, quiz}) => {
     const [flag, set_flag] = useState(false)
+    let navigate = useNavigate()
     function update() {
-        store_user(user)
+        local_store_user(user)
         set_flag(!flag)
     }
     return (

@@ -1,9 +1,9 @@
-import { alert_limit, limits, quiz_gl, store_user, user } from './data.mjs';
+import { alert_limit, limits, quiz_gl, local_store_user, user } from '../data.mjs';
 import add_svg from './assets/add.svg'
 import delete_svg from './assets/delete.svg'
 import play_svg from './assets/play.svg'
 import React, {useState} from 'react';
-import { Question, Quiz } from './classes.mjs';
+import { Question, Quiz } from '../classes.mjs';
 import { Footer } from './Footer';
 import { ViewQuestionEdit } from './ViewQuestionEdit';
 
@@ -14,7 +14,7 @@ import { ViewQuestionEdit } from './ViewQuestionEdit';
 export const ViewQuizEdit = (args) => {
     const [flag, update_flag] = useState(false)
     const [question_ind, set_question_ind] = useState(0)
-    function update() { store_user(user); update_flag(!flag)}
+    function update() { local_store_user(user); update_flag(!flag)}
     let questions = args.quiz.questions
 
     return (

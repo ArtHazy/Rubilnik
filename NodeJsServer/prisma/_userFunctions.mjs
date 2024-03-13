@@ -4,29 +4,22 @@ const prisma = new PrismaClient();
 export async function deleteAllUsers() {
   return await prisma.user.deleteMany();
 }
-export async function createUser(id,{name,email,password},quizzes) {
-  var find = await prisma.user.findUnique({
-    where:{
-      email:email
-    }
+async function findUser(email) {
+  console.log('find '+email);
+  return await prisma.user.findUnique({
+    where: { email }
   })
-  if (find){
-    return null
-  } else {
-    var result = await prisma.user.create({
-      data: {
-        id,     
-        email,    
-        name,        
-        password,
-        quizzes,
-      },
-    });
-    return result
+}
+
+export async function createUser(id,{name,email,password},quizzes) {
+  let user = await findUser(email)
+  if (user){return null}
+  else{
+    return await prisma.user.create({
+      data: {id,email,name,password,quizzes}
+    })
   }
 }
- var s = ['a','b','c','d','e','f','g','h','i','j','k'];
-s.indexOf('a')
 export async function deleteUserById(id) {
   return await prisma.user.delete({
     where: {
@@ -41,6 +34,15 @@ export async function getUser(email) {
     }
   })
 }
-
+export async function putUser(email, {name,password,quizzes}) {
+  let user = await findUser(email);
+  console.log(user);
+  if(user){
+    return await prisma.user.update({
+      where:{email: email}, 
+      data: {email,name,password,quizzes}
+    })
+  } else return null
+}
 
 

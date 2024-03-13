@@ -8,7 +8,7 @@ import { Server } from 'socket.io';
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server, {cors: {origin: "http://localhost:5173"}});
+const io = new Server(server, {cors: {origin: "*"}});
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 app.use(express.json());
@@ -34,7 +34,7 @@ app.get('/getTest.html', (req, res) => {
 
 // Prisma DB functions
 import {
-  deleteAllUsers,createUser,deleteUserById,getUser
+  deleteAllUsers,createUser,deleteUserById,getUser, putUser
 } from "./prisma/_userFunctions.mjs";
 import { 
   updateUsersQuizzes, 
@@ -63,7 +63,7 @@ app.post('/hi', (req,res)=>{
   res.status(200).send()
 })
 
-app.post('/getUser',(req,res)=>{
+app.post('/user/verify',(req,res)=>{
   reqNotifier(req);
   if (doesJsonHave(req.body, handleMissingProperties, 'email', 'password')){
     try {
@@ -85,13 +85,26 @@ app.post('/user',(req,res)=>{
       var userId = userIds.getFreeId();
       if (userId) {
         createUser(userId,{...req.body},[]).then(result=>{
-          if (result) res.status(200).json({id: userId ,msg: 'Success'}) 
+          if (result) res.status(200).json(result) 
           else res.status(400).json({msg:'Failed to create'})
         })
       }else{
         res.status(500).json({msg:"Failed to create: ran out of id's"})
       }
     } catch (error) {
+      res.status(500).json({msg:"Server error"})
+    }
+  }
+})
+app.put('/user',(req,res)=>{
+  reqNotifier(req);
+  if (doesJsonHave(req.body, handleMissingProperties, 'email')){
+    try{
+      putUser(req.body.email, req.body).then(result=>{
+        if (result) res.status(200).json(result)
+        else res.status(400).json({msg:'Failed to put'})
+      })
+    } catch (e) {
       res.status(500).json({msg:"Server error"})
     }
   }
@@ -117,6 +130,10 @@ app.post('/usersQuizzes',(req,res)=>{
       else res.status(400).json({msg: "Failed to update"})
     })
   }
+})
+app.post('/user/verify',(req,res)=>{
+  reqNotifier(req)
+
 })
 
 

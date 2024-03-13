@@ -2,9 +2,9 @@
 import { ViewLibrary } from './ViewLibrary';
 import { ViewProfile } from './ViewProfile';
 import { ViewJoin } from './ViewJoin';
-import home_svg from './assets/home.svg'
-import hub_svg from './assets/hub.svg'
-import user_svg from './assets/user.svg'
+import home_svg from '../assets/home.svg'
+import hub_svg from '../assets/hub.svg'
+import user_svg from '../assets/user.svg'
 
 /**
  * @param {{bottom:number|string, children}} args 

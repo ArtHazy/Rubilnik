@@ -1,5 +1,7 @@
 export class User {
+    id;
     /**
+     * @param {string} id
      * @param {string} name
      * @param {string} email 
      * @param {string} password 
@@ -10,7 +12,6 @@ export class User {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.profile_picture = profile_picture
         this.quizzes = quizzes
     };
 }

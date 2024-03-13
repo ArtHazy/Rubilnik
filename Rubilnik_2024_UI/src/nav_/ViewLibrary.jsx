@@ -1,11 +1,12 @@
-import { alert_limit, limits, quiz_gl, store_user, user } from './data.mjs';
+import { alert_limit, limits, quiz_gl, local_store_user, user } from '../data.mjs';
 import { useState, useLayoutEffect } from 'react';
-import { Quiz } from './classes.mjs';
+import { Quiz } from '../classes.mjs';
 import React from 'react';
 import { Footer } from './Footer';
-import add_svg from './assets/add.svg'
-import delete_svg from './assets/delete.svg'
+import add_svg from '../assets/add.svg'
+import delete_svg from '../assets/delete.svg'
 import { ViewQuestionList } from './ViewQuestionList';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * @param {{set_view}} args 
@@ -14,8 +15,10 @@ import { ViewQuestionList } from './ViewQuestionList';
 export const ViewLibrary = (args) => {
 
     const [flag, set_flag] = useState(false)
+    let navigate = useNavigate()
+
     function update() {
-        store_user(user)
+        local_store_user(user)
         set_flag(!flag)
     }
 
@@ -34,7 +37,7 @@ export const ViewLibrary = (args) => {
                     return (
                         <div className='hstack' style={{width:'100%'}}>
                             <button onClick={()=>{
-                                args.set_view( ()=>()=>ViewQuestionList( {set_view: args.set_view, questions: quiz.questions, quiz} ) )
+                                args.set_view( ()=>()=>ViewQuestionList( {set_view: args.set_view, quiz, quizInd: index} ) )
                             }} className='tile'> {quiz.title}
                             </button>
                             <button onClick={()=>{

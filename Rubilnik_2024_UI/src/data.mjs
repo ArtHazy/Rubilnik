@@ -1,7 +1,7 @@
 import { Quiz, User } from "./classes.mjs"
 
 
-export const user = JSON.parse(localStorage.getItem('self-user') || '{}');
+export let user = local_get_user()
 
 export let quiz_gl = { quiz: new Quiz('', []), index: null };
 
@@ -21,7 +21,15 @@ export function alert_limit(){
 /**
  * @param {User} user 
  */
-export function store_user(user){
+export function local_store_user(user){
     localStorage.setItem('self-user', JSON.stringify(user))
+}
+
+/**
+ * 
+ * @returns {User}
+ */
+export function local_get_user(){
+    return JSON.parse(localStorage.getItem('self-user'))
 }
 
