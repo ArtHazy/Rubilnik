@@ -11,6 +11,7 @@ import { SERVER_URL } from "../nav_/App";
 import { local_get_user } from "../data.mjs";
 
 const ViewGame = () => {
+
     let user = local_get_user()
     let socket = io(SERVER_URL)
     console.log(useLocation());
@@ -94,7 +95,7 @@ const ViewGame = () => {
     const reveal = (bool) => {
       if (bool) {
         setRevealed(true)
-        socket.emit('reveal', {roomId: userId, choiceInd:  quiz.questions[currIndex].validIndex})
+        socket.emit('reveal', {roomId: userId})
       }
     }
 
@@ -116,7 +117,7 @@ const ViewGame = () => {
         if (currIndex !== -1) {
           let tempobj = {
             text: quiz.questions[currIndex].text,
-            choices: quiz.questions[currIndex].answers
+            choices: quiz.questions[currIndex].choices
           }
           console.log(tempobj)
             socket.emit('next', {roomId: userId, question: tempobj, questionInd: currIndex}) 
@@ -132,15 +133,14 @@ const ViewGame = () => {
         function onJoin(obj) {
             console.log(obj)
             setConnect(oldArray => [...oldArray,obj]);
-          }
+        }
         socket.on('join', onJoin);
 
-        function onLeave(left) {
-          console.log('Leave detected', left)
-          setConnect(oldArray => [...oldArray.filter(obj => obj.userId !== left.userId)]);
-        }
-        console.log('Leave detected')
-      socket.on('leave', onLeave);
+
+      socket.on('leave', (left)=>{
+        alert('Leave detected',left.userName, left.userId);
+        setConnect(oldArray => [...oldArray.filter(obj => obj.userId !== left.userId)]);
+      });
 
 
         function onChoice(obj) {
@@ -172,13 +172,30 @@ const ViewGame = () => {
   return (
     <div className="ViewGame" style={start ? end ? {} : white_bg : black_bg}>
       {end ? <div className="spacer"></div> : ""}
-      <div className="flex_center">
+      <div className="flex_center hstack">
           <div className={ start ? end ? "timer_b" : "timer_w space_top_timer":"timer_b"}>ВИКТОРИНА {quiz.title.toUpperCase()}</div>
           {start ?  end ? <Endgame scores={scoresState} scoresToParent={getScores} connected={connected} socket={socket}/> : <Game question={quiz.questions[currIndex]} passNext={next} passReveal={reveal} length={length}/> : <Lobby socket={socket} users={connected} passStartFlag={getStartFlag} roomId={userId}/>}
+          
       </div>
       <div className="logo_wrap">
         {start ? <h1 className="logo_down">РУБИЛЬ<span style={{color: "#D6BF81"}}>НИК</span></h1> : ""}
       </div>
+      <div className="spacer-default"></div>
+      <div className="vstack">
+        <div style={{color: start&!end ? "black" : "white" }}>connected players</div>
+        <div className="hstack">
+          {console.log('connected', connected)}
+          {connected.map((val)=>{
+            return <div className="user_card hstack" style={{width:'fit-content'}}>
+              <div>{val.userName}</div>
+              {/* <div className="spacer-default"></div>
+              <div>{val.userId}</div> */}
+            </div>
+          })}
+        </div>
+      </div>
+      
+
     </div>
   )
 }

@@ -1,0 +1,9 @@
+{
+    "scripts": {
+      "f": "cd ./ReactUIServer && npm run host",
+      "b": "cd ./NodeJsServer && node app.mjs",
+      "i": "cd ./NodeJsServer && npm install && cd ../ && cd ./ReactUIServer && npm install",
+      "p": "cd ./NodeJsServer && npx prisma format && npx prisma generate && npx prisma db push",
+      "s": "cd ./NodeJsServer && npx prisma studio"
+    }
+  }

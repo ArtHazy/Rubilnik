@@ -30,7 +30,7 @@ export class Question {
      * @param {string} text 
      * @param {Choice[]} choices 
      */
-    constructor(text,choices,) {
+    constructor(text,choices) {
         this.choices = choices;
         this.text = text;
     }
