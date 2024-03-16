@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import Game from "./Game";
 import Endgame from "./Endgame";
 import { io } from "socket.io-client";
-import { SERVER_URL } from "../nav_/App";
+import { SERVER_URL } from "../main";
 import { local_get_user } from "../data.mjs";
 
 const ViewGame = () => {
@@ -138,7 +138,6 @@ const ViewGame = () => {
 
 
       socket.on('leave', (left)=>{
-        alert('Leave detected',left.userName, left.userId);
         setConnect(oldArray => [...oldArray.filter(obj => obj.userId !== left.userId)]);
       });
 

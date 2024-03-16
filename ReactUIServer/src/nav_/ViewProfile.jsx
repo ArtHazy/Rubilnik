@@ -1,7 +1,7 @@
 import { limits,local_store_user,user } from '../data.mjs';
 import { useState } from 'react';
 import React from 'react';
-import { SERVER_URL } from './App';
+import { SERVER_URL } from '../main';
 import { useNavigate } from 'react-router-dom';
 
 

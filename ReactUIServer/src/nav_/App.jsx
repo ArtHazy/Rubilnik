@@ -5,7 +5,7 @@ import { ViewProfile } from "./ViewProfile";
 import { user } from "../data.mjs";
 import { useNavigate } from "react-router-dom";
 
-export const SERVER_URL = "http://localhost:3000"
+
 
 export let currentView;
 

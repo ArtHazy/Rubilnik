@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { limits } from '../data.mjs';
-import { SERVER_URL } from '../nav_/App';
+import { SERVER_URL } from '../main';
+
 
 export const ViewLogin = () => {
 

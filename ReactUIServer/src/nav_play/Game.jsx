@@ -53,15 +53,17 @@ const Game = ({question, passNext, passReveal, length}) => {
       // }
 
   return (
-    <div className="game_geometry">
-        {/* {revealed ? answers.choices[answers.validIndex].text : ""} */}
-        <div className="question_title">{question.text}</div>
-        <div className="question_numbers">{num}/{length}</div>
-        <div className="question">{ revealed ? renderRevealed() : renderAnswers()}</div>
-        {/*<div className="clock">120</div>*/}
-        <button className={revealed ? "absolute_tr question_next_btn" : "absolute_tr question_next_btn"} onClick={() => {toPass()}}>СЛЕДУЮЩИЙ</button>
-        {/* <button className="absolute_tr space_top a_to_normal black" onClick={() => {toPassReveal()}}>ПОКАЗАТЬ</button> */}
-    </div>
+
+      <div className="game_geometry">
+        <button className={"question_next_btn"} onClick={() => {toPass()}}>СЛЕДУЮЩИЙ</button>
+          {/* {revealed ? answers.choices[answers.validIndex].text : ""} */}
+          <div className="question_title">{question.text}</div>
+          <div className="question_numbers">{num}/{length}</div>
+          <div className="question">{ revealed ? renderRevealed() : renderAnswers()}</div>
+          {/*<div className="clock">120</div>*/}
+          {/* <button className="absolute_tr space_top a_to_normal black" onClick={() => {toPassReveal()}}>ПОКАЗАТЬ</button> */}
+      </div>
+
   )
 }
 

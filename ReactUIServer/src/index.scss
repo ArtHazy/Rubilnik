@@ -4,14 +4,16 @@
   --color-acc: rgba(150, 180, 240);
   --color-acc-faded: rgba(150, 180, 240, 0.8);
   //--color-bg: rgb(41, 43, 61);
-  --color-bg: #242424;
+  --color-dark: #242424;
+  --color-light: #D9D9D9;
 
-  --color-text: rgba(230, 230, 240);
   --color-bg2: rgba(50, 60, 80);
   --color-hd-ft: rgb(28, 32, 47);
 
-
-  
+  --color-acc1: rgb(112, 155, 149);
+  --color-acc2: rgb(240, 138, 93);
+  --color-acc3: rgb(184, 59, 94);
+  --color-acc4: rgb(217, 217, 217);
 }
 
 html,
@@ -19,11 +21,48 @@ body,
 #root {
   width: 100%;
   height: 100%;
+  font-family: 'Russo One', sans-serif;
   margin: 0;
   box-sizing: border-box;
   overflow: hidden;
-  background-color: var(--color-bg)
-}
+  background-color: var(--color-dark);
+  
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  
+  button {
+    font-family: inherit;
+    background-color: var(--color-light);
+    fill: var(--color-dark);
+    color: var(--color-dark);
+    width: fit-content;
+    padding: .2em;
+    border-radius: .15cm;
+    /* cursor: pointer; */
+
+    div,p,h1,h2,h3,h4,h5,h6 {
+      color: var(--color-dark);
+    }
+  }
+  input, select{
+    font-family: inherit;
+    background: var(--color-light);
+    color: var(--color-dark);
+    fill: var(--color-dark);
+    padding: 4px !important;
+    border-radius: 8px;
+    box-sizing: border-box;
+  }
+  
+  div,p,h1,h2,h3,h4,h5,h6 {
+    color: var(--color-light);
+  }
 
 .full-screen {
   width: 100%;
@@ -85,7 +124,7 @@ body,
     width: 100%;
     max-width: 6cm;
     padding: 8px;
-    background: var(--color-hd-ft);
+    background: transparent;
     border-radius: 8px 8px 8px 8px;
     justify-content: space-evenly;
     align-items: center;
@@ -93,9 +132,12 @@ body,
     button {
       @extend .vstack;
       padding: .2em;
+      margin: .2em;
+
       box-sizing: border-box;
       border: 0;
       fill: hsla(50%, 0, 50, 50%);
+      background: var(--color-light);
       transition: .3s;
       width: 100%;
 
@@ -105,6 +147,7 @@ body,
         scale: 1.2;
       }
     }
+
   }
 }
 
@@ -122,6 +165,7 @@ body,
 }
 
 .view {
+  font-family: inherit;
   width: 100%;
   max-width: 30cm;
   border: 4px pink;
@@ -131,13 +175,14 @@ body,
   box-sizing: border-box;
   align-items: center;
   input{
+    font-family: inherit;
     text-align: center
   }
 }
 
 .icon {
   width: 2em;
-  height: 2em;
+  // height: auto;
   flex-shrink: 0;
 }
 
@@ -162,45 +207,13 @@ body,
 .App {
   @extend .full-screen;
   @extend .vstack;
+  font-family: inherit;
   margin-bottom: auto;
   box-sizing: border-box;
   overflow: hidden;
   /* justify-content: center; */
   align-items: center;
-
-  button {
-    background-color: var(--color-acc-faded);
-    border: 0px solid whitesmoke;
-    color: black;
-    fill: var(--color-acc);
-    color: var(--color-text);
-    width: fit-content;
-    padding: .2cm;
-    border-radius: .15cm;
-    /* cursor: pointer; */
   }
-  
-  input, select{
-    background: transparent;
-    color: var(--color-text);
-    fill: var(--color-text);
-    border: 2px solid var(--color-acc-faded) !important;
-    padding: 4px !important;
-    border-radius: 8px;
-    box-sizing: border-box;
-  }
-  
-  div,
-  p,
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    color: var(--color-text);
-  }
-
   .view-container {
     @extend .hstack;
     width: 100%;
@@ -220,6 +233,24 @@ body,
     .ViewProfile, .ViewJoin{
       align-self: center
     }
+    .ViewQuestionList, .ViewQuestionEdit{
+      .grid-questionList, .grid-choicesList{
+        display: grid;
+        gap: .5em;
+        width: 100%;
+        grid-template-columns: minmax(max-content, 1fr) 10fr 1fr;
+        grid-template-areas: 
+          'number' 'button';
+
+        *{
+          justify-self: center;
+          align-self: center;
+          &.hstack{
+            width: 100%
+          }
+        }
+      }
+    }
 
 
     .ViewLibrary {
@@ -233,11 +264,13 @@ body,
         display: grid;
         gap: .5cm;
         justify-items: center;
-        grid-template-columns: repeat(auto-fit, minmax(4.4cm, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(6cm, 1fr));
       }
       .tile {
+        overflow-wrap: break-word;
+        overflow: auto;
         width: 100%;
-        height: fit-content;
+        height: auto;
         min-height: 2cm;
         max-width: 12cm;
         text-align: center;
@@ -257,8 +290,9 @@ body,
   overflow: auto;
   width: 100%;
   height: 100%;
+  font-family:inherit;
 
-  font-family: 'Russo One', sans-serif;
+  
   line-height: 1.5;
   font-weight: 400;
 
@@ -770,6 +804,9 @@ body,
   }
   
   .question_next_btn{
+    position: absolute;
+    top: 10px;
+    right: 10px;
     color: #242424 !important;
     border-color: #242424;
     padding-right: 130px;
@@ -1039,7 +1076,6 @@ body,
   }
   
   .logo_wrap{
-    width: 1350px;
     display: flex;
     flex-direction: column;
     justify-content: end;
@@ -1050,6 +1086,7 @@ body,
     padding: 0px;
     margin: 0px;
     margin-top: 10px;
+    margin-right: 10px;
     background-color: #242424;
     padding: 5px 10px;
     border-radius: 5px;

@@ -1,13 +1,15 @@
 import { useState } from "react"
 import { ViewQuestionEdit } from "./ViewQuestionEdit"
 import { Question, Quiz } from "../classes.mjs"
-import { SERVER_URL } from "./App"
 import play_svg from  "../assets/play.svg"
 import add_svg from  "../assets/add.svg"
 import delete_svg from "../assets/delete.svg"
+import back_svg from "../assets/back.svg"
 import { Footer } from "./Footer"
 import { local_store_user, user } from "../data.mjs"
 import { useNavigate } from "react-router-dom"
+import { SERVER_URL } from "../main"
+import { ViewLibrary } from "./ViewLibrary"
 
 
 
@@ -23,6 +25,7 @@ export const ViewQuestionList = ({set_view,quiz,quizInd})=>{
         local_store_user(user)
         set_flag(!flag)
     }
+
     return(
         <div className="ViewQuestionList">
 
@@ -33,30 +36,37 @@ export const ViewQuestionList = ({set_view,quiz,quizInd})=>{
             }} style={{width:'100%'}}/>
 
             <h3>Questions</h3>
-            {quiz.questions.map((question,index)=>
-                <div className="hstack" style={{width:'100%'}}>
-                    <button onClick={()=>{
+            <div className="grid-questionList">
+                {quiz.questions.map((question,index)=>[
+                    <div>{index}</div>,
+                    <button className="hstack" onClick={()=>{
                         set_view(()=>()=>ViewQuestionEdit({set_view, question, quiz})) 
                     }} style={{flexGrow:1}}>
-                        <div className="listItem hstack">
-                            {index+1}
-                            <div className="spacer-default"></div>
+                        <div className="listItem">
+                            {/* <div className="spacer-default"></div> */}
                             {question.text}
                         </div>
-                    </button>
+                    </button>,
                     <button onClick={()=>{
                         quiz.questions.splice(index, 1)
                         update()
                     }}>
-                        <img src={delete_svg} className="icon" alt="" /></button>
-                </div>
-            )}
+                        <img src={delete_svg} className="icon" alt="" />
+                    </button>
+                ])}
+            </div>
+
 
             
 
-            <Footer bottom='1.5cm'>
+            <Footer bottom='3em'>
+                
                 <div className="buttons-container">
-
+                    <button onClick={()=>{
+                        set_view(()=>()=>ViewLibrary({set_view}))
+                    }}>
+                        <img src={back_svg} alt="back" className='icon'/>
+                    </button>
                     <button onClick={()=>{
                         console.log(quiz.questions);
                         quiz.questions.push(new Question('new',[]))
