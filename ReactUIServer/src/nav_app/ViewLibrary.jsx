@@ -38,12 +38,12 @@ export const ViewLibrary = (args) => {
                         <div className='hstack' style={{width:'100%'}}>
                             <button onClick={()=>{
                                 args.set_view( ()=>()=>ViewQuestionList( {set_view: args.set_view, quiz, quizInd: index} ) )
-                            }} className='tile'> {quiz.title}
+                            }} style={{flexGrow:1}}> {quiz.title}
                             </button>
                             <button onClick={()=>{
                                 user.quizzes.splice(index, 1);
                                 update()
-                            }}><img src={delete_svg} className='icon'></img></button>
+                            }} style={{flexShrink:0}}><img src={delete_svg} className='icon'></img></button>
                             
                         </div>
                     )

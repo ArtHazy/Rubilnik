@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './nav_/App.jsx'
+import App from './nav_app/App.jsx'
 import './index.scss'
 import {
   createBrowserRouter,
