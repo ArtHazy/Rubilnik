@@ -8,7 +8,7 @@ import back_svg from "../assets/back.svg"
 import { Footer } from "./Footer"
 import { local_store_user, user } from "../data.mjs"
 import { useNavigate } from "react-router-dom"
-import { SERVER_URL } from "../main"
+import { SERVER_URL, callView } from "../main"
 import { ViewLibrary } from "./ViewLibrary"
 
 
@@ -40,10 +40,9 @@ export const ViewQuestionList = ({set_view,quiz,quizInd})=>{
                 {quiz.questions.map((question,index)=>[
                     <div>{index}</div>,
                     <button className="hstack" onClick={()=>{
-                        set_view(()=>()=>ViewQuestionEdit({set_view, question, quiz})) 
+                        set_view(callView(()=>ViewQuestionEdit({set_view, question, quiz}), 'Edit question')) 
                     }} style={{flexGrow:1}}>
                         <div className="listItem">
-                            {/* <div className="spacer-default"></div> */}
                             {question.text}
                         </div>
                     </button>,
@@ -60,10 +59,9 @@ export const ViewQuestionList = ({set_view,quiz,quizInd})=>{
             
 
             <Footer bottom='3em'>
-                
                 <div className="buttons-container">
                     <button onClick={()=>{
-                        set_view(()=>()=>ViewLibrary({set_view}))
+                        set_view(callView(()=>ViewLibrary({set_view}), 'Library'))
                     }}>
                         <img src={back_svg} alt="back" className='icon'/>
                     </button>
@@ -74,17 +72,7 @@ export const ViewQuestionList = ({set_view,quiz,quizInd})=>{
                     }}><img src={add_svg} className="icon"/></button>
                     
                     <button onClick={()=>{ // start host
-                        
                         navigate('/play', {state: {quiz, ind: quizInd}})
-                        //window.location.href = '/play'
-
-                        // fetch(SERVER_URL+'/start', {
-                        //     method: 'POST',
-                        //     headers: { 'Content-Type': 'application/json'},
-                        //     body: JSON.stringify({ quiz })
-                        // }).then(res=>{
-                        //     res.ok? alert('ok') : alert('fail')
-                        // }).catch(e=>{console.log(e.message); alert(e.message)})
                     }}><img src={play_svg} className="icon"/></button>
                 </div>
             </Footer>

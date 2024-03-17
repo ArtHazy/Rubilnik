@@ -7,21 +7,19 @@ import add_svg from '../assets/add.svg'
 import delete_svg from '../assets/delete.svg'
 import { ViewQuestionList } from './ViewQuestionList';
 import { useNavigate } from 'react-router-dom';
+import { callView } from '../main';
 
 /**
- * @param {{set_view}} args 
+ * @param {{set_view}} 
  * @returns 
  */
-export const ViewLibrary = (args) => {
+export const ViewLibrary = ({set_view}) => {
 
     const [flag, set_flag] = useState(false)
+
+    function update() {local_store_user(user);set_flag(!flag)}
     let navigate = useNavigate()
-
-    function update() {
-        local_store_user(user)
-        set_flag(!flag)
-    }
-
+    
     // useLayoutEffect(() => {
     //     let scrollView = document.getElementById('view-container')
     //     console.log('scroll height ' + scrollView?.scrollHeight);
@@ -37,7 +35,7 @@ export const ViewLibrary = (args) => {
                     return (
                         <div className='hstack' style={{width:'100%'}}>
                             <button onClick={()=>{
-                                args.set_view( ()=>()=>ViewQuestionList( {set_view: args.set_view, quiz, quizInd: index} ) )
+                                set_view(callView(()=>ViewQuestionList( {set_view, quiz, quizInd: index} ), `Edit quiz: ${quiz.title} `) )
                             }} style={{flexGrow:1}}> {quiz.title}
                             </button>
                             <button onClick={()=>{

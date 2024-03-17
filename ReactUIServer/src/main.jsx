@@ -12,6 +12,16 @@ import { ViewRegister } from './nav_authorizaztion/ViewRegister.jsx';
 
 
 export const SERVER_URL = "http://192.168.0.165:3000"
+/**
+ * 
+ * @param {()=>React.JSX.Element} jsxElement 
+ * @param {string} name 
+ * @returns 
+ */
+export function callView(jsxElement, name){
+  console.log('sdfsf',jsxElement);
+  return {jsxElement, name}
+}
 
 const router = createBrowserRouter([
   {

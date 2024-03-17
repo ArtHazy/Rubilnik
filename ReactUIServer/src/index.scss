@@ -253,6 +253,14 @@ body,
           }
         }
       }
+      .ViewQuestionEdit{
+        .choice{
+          flex-grow: 1;
+          &.correct{
+            background: var(--color-acc1)
+          }
+        }
+      }
   
   
       .ViewLibrary {

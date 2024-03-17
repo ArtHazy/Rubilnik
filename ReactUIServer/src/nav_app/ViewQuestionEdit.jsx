@@ -8,6 +8,7 @@ import addSvg from '../assets/add.svg'
 import backSvg from '../assets/back.svg'
 import deleteSvg from '../assets/delete.svg'
 import { useNavigate } from 'react-router-dom';
+import { callView } from '../main';
 
 /**
  * @param {{set_view, question:Question, quiz:Quiz}} args 
@@ -20,6 +21,7 @@ export const ViewQuestionEdit = ({set_view, question, quiz}) => {
         local_store_user(user)
         set_flag(!flag)
     }
+
     return (
         <div className='ViewQuestionEdit'>
 
@@ -33,17 +35,17 @@ export const ViewQuestionEdit = ({set_view, question, quiz}) => {
             <h3>Choices</h3>
             <div className="grid-choicesList">
                 {question.choices.map((choice, index) => [
-                    <input type="checkbox" style={{width:'1.3em', flexShrink:0}} name={'correct-selection'} checked={choice.isCorrect} onClick={() => {
+                    <input id={`checkbox ${index}`} type="checkbox" style={{width:'1.3em', flexShrink:0}} name={'correct-selection'} checked={choice.isCorrect} onClick={() => {
                         choice.isCorrect = !choice.isCorrect;
                         update()
                         console.log(question.choices);
                     }} />,
-                    <input className='hstack' value={choice.text} maxLength={limits.maxTextLength} onChange={(e) => {
+                    <input className={'hstack choice ' + (choice.isCorrect? "correct":null) } value={choice.text} maxLength={limits.maxTextLength} onChange={(e) => {
                         choice.text = e.target.value
                         update()
                         console.log(choice.text);
                         console.log(choice);
-                    }} style={{flexGrow:1}}/>,
+                    }}/>,
                     <button onClick={() => {
                         question.choices.splice(index, 1)
                         update()
@@ -56,7 +58,7 @@ export const ViewQuestionEdit = ({set_view, question, quiz}) => {
             <Footer bottom={'3em'}>
                 <div className="buttons-container">
                     <button onClick={()=>{
-                        set_view(()=>()=>ViewQuestionList({set_view, quiz}))
+                        set_view(callView(()=>ViewQuestionList({set_view, quiz}), `Edit quiz: ${quiz.title}`))
                     }}>
                         <img src={backSvg} alt="back" className='icon'/>
                     </button>

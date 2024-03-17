@@ -5,33 +5,39 @@ import { ViewJoin } from './ViewJoin';
 import home_svg from '../assets/home.svg'
 import hub_svg from '../assets/hub.svg'
 import user_svg from '../assets/user.svg'
+import { callView } from '../main';
+import React from 'react';
 
 /**
- * @param {{bottom:number|string, children}} args 
+ * @param { {bottom:number|string, children} } 
+ * React.Dispatch<React.SetStateAction<{
+    callView: () => React.JSX.Element;
+    name: string;
+}>>
  * @returns 
  */
-export const Footer = (args) => {
+export const Footer = ({bottom, children}) => {
     return (
-        <div className='Footer' style={{ bottom: args.bottom }}>
-            {args.children}
+        <div className='Footer' style={{ bottom: bottom }}>
+            {children}
         </div>
     );
 };
 
 /**
- * @param {{view_name:string, set_view}} args 
+ * @param {{set_view}} args 
  * @returns 
  */
-export const ViewNavigation = (args) => {
+export const ViewNavigation = ({set_view}) => {
     return (
         <div className='buttons-container'>
-            <button onClick={ ()=>{args.set_view(()=>()=>ViewLibrary({set_view: args.set_view}))} }>
+            <button onClick={ ()=>{set_view(callView(()=>ViewLibrary({set_view: set_view}), 'Library'))}}>
                 <img className='icon' src={home_svg} alt="home icon" />
             </button>
-            <button onClick={ ()=>{args.set_view(()=>()=>ViewJoin())} }>
+            <button onClick={ ()=>{set_view(callView(()=>ViewJoin({}),'Join'))}}>
                 <img className='icon' src={hub_svg} alt="hub icon" />
             </button>
-            <button onClick={ ()=>{args.set_view(()=>()=>ViewProfile({}))} }>
+            <button onClick={ ()=>{set_view(callView(()=>ViewProfile({}),'Profile'))}}>
                 <img className='icon' src={user_svg} alt="user icon" />
             </button>
         </div>
