@@ -39,7 +39,7 @@ export class Quiz {
     /**
      * @param {string} title 
      * @param {Question[]} questions 
-     */
+    */
     constructor(title,questions) {
         this.questions = questions;
         this.title = title

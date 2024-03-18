@@ -20,12 +20,10 @@ function App() {
         <Header>
           {view.name}
         </Header>
-        <div id='view-container' className="view-container">
-          {console.log('render', view.jsxElement())}
-          {view.jsxElement()}
-          
-        </div>
-        <Footer bottom={5}>
+
+        {view.jsxElement()}
+
+        <Footer>
           <ViewNavigation set_view={set_view}></ViewNavigation>
         </Footer>
       </div>

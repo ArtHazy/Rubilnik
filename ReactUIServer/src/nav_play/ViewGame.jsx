@@ -167,21 +167,28 @@ const ViewGame = () => {
 
 
 
-
   return (
     <div className="ViewGame" style={start ? end ? {} : white_bg : black_bg}>
       {end ? <div className="spacer"></div> : ""}
-      <div className="flex_center hstack">
-          <div className={ start ? end ? "timer_b" : "timer_w space_top_timer":"timer_b"}>ВИКТОРИНА {quiz.title.toUpperCase()}</div>
+      {/* {window.onresize=() => {
+        console.log('window', window.innerWidth, window.innerHeight)
+        console.log('body', document.body.clientWidth,document.body.clientHeight)
+      }} */}
+
+      <div className={"game-layout " + (window.innerWidth<window.innerHeight? "vertical " : "horizontal ")}>
+
+          <div className={ (start ? (end ? "timer b " : "timer w space_top_timer ") : "timer b ") + (window.innerWidth>window.innerHeight? "horizontal ":null) }> {quiz.title.toUpperCase()}</div>
           {start ?  end ? <Endgame scores={scoresState} scoresToParent={getScores} connected={connected} socket={socket}/> : <Game question={quiz.questions[currIndex]} passNext={next} passReveal={reveal} length={length}/> : <Lobby socket={socket} users={connected} passStartFlag={getStartFlag} roomId={userId}/>}
           
       </div>
-      <div className="logo_wrap">
-        {start ? <h1 className="logo_down">РУБИЛЬ<span style={{color: "#D6BF81"}}>НИК</span></h1> : ""}
-      </div>
+
+      {start ? <h1 className="logo_down hstack">
+        <div className="rubil">РУБИЛЬ</div>
+        <div className="nik">НИК</div>
+      </h1> : ""}
       <div className="spacer-default"></div>
-      <div className="vstack">
-        <div style={{color: start&!end ? "black" : "white" }}>connected players</div>
+      <div className="hstack" style={{width:'100%'}}>
+        <div style={{color: start&!end ? "black" : "white" }}>connected players: {connected.length} </div>
         <div className="hstack">
           {console.log('connected', connected)}
           {connected.map((val)=>{

@@ -3,9 +3,12 @@ import { SERVER_URL } from '../main';
 
 export const ViewRegister = () => {
     return (
+        JSON.parse(localStorage.getItem('self-user'))? window.location.href='/' :
         <div className='ViewRegister'>
-            <div>
-                <div style={{ fontSize: '2em' }}>REGISTER</div>
+                <div className="hstack">
+                    <div className='reg accent'>REG</div>
+                    <div className='ister accent'>ISTER</div>
+                </div>
 
                 <div>
                     <input id="username-input" type="text" placeholder='username' maxLength={limits.maxNameLength} />
@@ -14,6 +17,8 @@ export const ViewRegister = () => {
                     <div className='spacer-default'></div>
                     <input id="password-input" type="password" placeholder='password' maxLength={limits.maxPasswordLength} />
                 </div>
+
+                <div className="spacer-default"/>
                 <button id='submit' onClick={() => {
                     let submit = document.getElementById('submit');
                     submit.hidden = true;
@@ -47,13 +52,13 @@ export const ViewRegister = () => {
                     })
 
                 }}>Register</button>
-                <div className='spacer-default'></div>
+                <div className='spacer-default'/>
 
                 <a href="/login">
-                    <button>Login</button>
+                    <small>Login</small>
                 </a>
 
-            </div>
+
         </div>
     )
 }

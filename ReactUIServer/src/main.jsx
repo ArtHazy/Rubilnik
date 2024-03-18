@@ -11,7 +11,7 @@ import { ViewLogin } from './nav_authorizaztion/ViewLogin.jsx';
 import { ViewRegister } from './nav_authorizaztion/ViewRegister.jsx';
 
 
-export const SERVER_URL = "http://192.168.0.165:3000"
+export const SERVER_URL = "http://192.168.0.187:3000"
 /**
  * 
  * @param {()=>React.JSX.Element} jsxElement 

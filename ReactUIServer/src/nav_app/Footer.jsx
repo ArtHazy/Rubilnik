@@ -10,10 +10,6 @@ import React from 'react';
 
 /**
  * @param { {bottom:number|string, children} } 
- * React.Dispatch<React.SetStateAction<{
-    callView: () => React.JSX.Element;
-    name: string;
-}>>
  * @returns 
  */
 export const Footer = ({bottom, children}) => {

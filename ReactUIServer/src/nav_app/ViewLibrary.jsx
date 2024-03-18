@@ -28,7 +28,7 @@ export const ViewLibrary = ({set_view}) => {
 
 
     return (
-        <div style={{alignItems:'normal'}} className='ViewLibrary'>
+        <div className='ViewLibrary'>
             <div className='grid-tile-container'>
 
                 {user.quizzes?.map((quiz, index) => {

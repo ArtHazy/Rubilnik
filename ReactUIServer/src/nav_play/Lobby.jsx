@@ -4,25 +4,12 @@ import { useEffect, useState } from "react"
 const Lobby = ({users, passStartFlag, roomId, socket}) => {
   console.log('socket', socket);
 
-  const [usersState, setUsersState] = useState(users)
-  useEffect(() => {
-    setUsersState(users)
-  }, [users])
-
-  function renderUsers() {
-    let temp = []
-    for (let i = 0; i < usersState.length; i++) {
-      temp.push(<div key={usersState[i].userId} className="user_card">{usersState[i].userName}</div>)
-    }
-    return temp
-  }
-
   if (socket){
     return (
       <div className="lobby game_geometry">
-        <p className="user_count">{usersState.length} <span className="room_id">{roomId}</span><span className="room_helptext"> - код подключения</span></p>
+        <div className="user_count"> <div className="room_id">{roomId}</div><div className="room_helptext">connection code</div></div>
         {/* <div className="user_card_wrapper gray_scroll">{renderUsers()}</div> */}
-        <button className="start_button" onClick={() => passStartFlag(true)}>СТАРТ</button>
+        <button className="start_button" onClick={() => passStartFlag(true)}>START</button>
       </div>
     )
   } else {
