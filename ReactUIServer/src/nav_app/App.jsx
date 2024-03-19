@@ -24,7 +24,7 @@ function App() {
         {view.jsxElement()}
 
         <Footer>
-          <ViewNavigation set_view={set_view}></ViewNavigation>
+          <ViewNavigation view={view} set_view={set_view}></ViewNavigation>
         </Footer>
       </div>
     );

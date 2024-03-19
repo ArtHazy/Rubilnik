@@ -187,9 +187,9 @@ const ViewGame = () => {
         <div className="nik">НИК</div>
       </h1> : ""}
       <div className="spacer-default"></div>
-      <div className="hstack" style={{width:'100%'}}>
-        <div style={{color: start&!end ? "black" : "white" }}>connected players: {connected.length} </div>
-        <div className="hstack">
+      <div className="vstack" style={{width:'100%'}}>
+        <div style={{color: start&!end ? "black" : "white", left:0, right:0, margin:'auto' }}>connected players: {connected.length} </div>
+        <div className="hstack" style={{overflow: 'scroll'}}>
           {console.log('connected', connected)}
           {connected.map((val)=>{
             return <div className="user_card hstack" style={{width:'fit-content'}}>

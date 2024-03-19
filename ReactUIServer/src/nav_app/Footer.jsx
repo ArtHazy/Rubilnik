@@ -21,19 +21,25 @@ export const Footer = ({bottom, children}) => {
 };
 
 /**
- * @param {{set_view}} args 
+ * @param {{set_view, view}} args 
  * @returns 
  */
-export const ViewNavigation = ({set_view}) => {
+export const ViewNavigation = ({view, set_view}) => {
     return (
-        <div className='buttons-container'>
-            <button onClick={ ()=>{set_view(callView(()=>ViewLibrary({set_view: set_view}), 'Library'))}}>
+        <div className='buttons-container view-navigation '>
+            <button 
+                className={view.name === 'Library'? 'active ': '' }
+                onClick={ ()=>{set_view(callView(()=>ViewLibrary({set_view: set_view}), 'Library'))}}>
                 <img className='icon' src={home_svg} alt="home icon" />
             </button>
-            <button onClick={ ()=>{set_view(callView(()=>ViewJoin({}),'Join'))}}>
+            <button
+                className={ view.name === 'Join'? 'active': '' } 
+                onClick={ ()=>{set_view(callView(()=>ViewJoin({}),'Join'))}}>
                 <img className='icon' src={hub_svg} alt="hub icon" />
             </button>
-            <button onClick={ ()=>{set_view(callView(()=>ViewProfile({}),'Profile'))}}>
+            <button 
+                className={ view.name === 'Profile'? 'active': '' }
+                onClick={ ()=>{set_view(callView(()=>ViewProfile({}),'Profile'))}}>
                 <img className='icon' src={user_svg} alt="user icon" />
             </button>
         </div>

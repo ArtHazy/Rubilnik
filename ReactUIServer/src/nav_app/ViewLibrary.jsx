@@ -49,7 +49,7 @@ export const ViewLibrary = ({set_view}) => {
 
             </div>
             <Footer bottom='3em'>
-                <div className='buttons-container'>
+                <div className='buttons-container view-actions'>
                     <button onClick={() => {
                         !user.quizzes ? user.quizzes = [] : null
                         user.quizzes.length < limits.maxQuizes ? user.quizzes.push(new Quiz('new', [])) : alert_limit()

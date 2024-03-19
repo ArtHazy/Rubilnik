@@ -28,7 +28,7 @@ const Game = ({question, passNext, passReveal, length}) => {
         let tempRev = []
         for (let i = 0; i < question.choices.length; i++) {
           tempRev.push(<div key={JSON.stringify(question.choices[i])} 
-          style={(i == 2 && question.choices.length == 3) ? (question.choices[i].isCorrect ? {backgroundColor: colors[i], left: "300px"} : {backgroundColor: wrongColors[i], left: "300px"}) : (question.choices[i].isCorrect ? {backgroundColor: colors[i]} : {backgroundColor: wrongColors[i]})} className="answer">
+          style={(question.choices[i].isCorrect ? {backgroundColor: colors[i]} : {backgroundColor: wrongColors[i]})} className="answer">
             {question.choices[i].text}
             <div className={i == 0 ? "letter" : i == 1 ? "letter" : i == 2 ? "letter" : "letter"}>{letters[i]}</div>
             </div>)

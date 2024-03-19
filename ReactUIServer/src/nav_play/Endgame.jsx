@@ -50,20 +50,18 @@ const Endgame = ({scores, scoresToParent}) => {
   function renderScores(arr) {
     let tempor = []
     for (let i = 0; i < arr.length; i++) {
-      tempor.push(<div key={arr[i].userId} className="user_scores">
-        <div className={i == 0 ? "user_first_ind user_index" : "user_index"}>{i + 1}</div>
-        <div className={i == 0 ? "user_first_name user_name" : "user_name"}>{arr[i].userName}</div>
-        <div className={i == 0 ? "user_first_score user_score" : "user_score"}>{arr[i].score}</div>
+      tempor.push(<div key={arr[i].userId} className="user-score">
+        <div className={i == 0 ? "index first" : "index"}>{i + 1}</div>
+        <div className={i == 0 ? "name first" : "name"}>{arr[i].userName}</div>
+        <div className={i == 0 ? "score first" : "score"}>{arr[i].score}</div>
         </div>)
     }
-    return tempor
+    return <div className="user-scores">{tempor}</div>
   }
 
   return (
-    <div>
-      <div className="game_geometry griddd white_scroll">
-          {ScoreComp}
-      </div>
+    <div className="game_geometry">
+        {ScoreComp}
     </div>
   )
 }
