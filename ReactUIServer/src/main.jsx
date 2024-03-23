@@ -18,10 +18,7 @@ export const SERVER_URL = "http://192.168.0.187:3000"
  * @param {string} name 
  * @returns 
  */
-export function callView(jsxElement, name){
-  console.log('sdfsf',jsxElement);
-  return {jsxElement, name}
-}
+
 
 const router = createBrowserRouter([
   {
@@ -29,7 +26,7 @@ const router = createBrowserRouter([
     element: <App />,
   },
   {
-    path: "/play",
+    path: "/play/:roomId",
     element: <ViewGame />,
   },
   {
@@ -44,7 +41,5 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>,
+  <RouterProvider router={router} />
 )

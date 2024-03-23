@@ -55,7 +55,7 @@ async function clearDB(){
 clearDB()
 var userIds = new IdTree(4)
 var playerIds = new IdTree(5);
-var socketsData = {};
+// var socketsData = {};
 
 
 app.post('/hi', (req,res)=>{
@@ -136,93 +136,119 @@ app.post('/user/verify',(req,res)=>{
 
 })
 
+// function handleSocketMissingProperties(missingProperties){
+  //   if (Array.isArray(missingProperties)){
+  //     socket.emit('missingProperties', {msg:`Missing required properties in socket.body: ${missingProperties.join(', ')}`})
+  //   }
+  // }
 
-
+  function logRooms(){
+    io.sockets.adapter.rooms.forEach((clients, roomId)=>{
+      console.log('Room', roomId, ":", clients);
+    })
+  }
 
 
 io.on('connection', (socket) => {
   console.log(`socket connect recieved: ${socket.id}`);
-
-  function handleSocketMissingProperties(missingProperties){
-    if (Array.isArray(missingProperties)){
-      socket.emit('missingProperties', {msg:`Missing required properties in socket.body: ${missingProperties.join(', ')}`})
-    }
-  }
-  socket.on('bark', (data) => {
+  logRooms()
+  
+  socket.on('bark', ({userName}) => {
     socket.rooms.forEach((room) => {
-      io.to(room).emit('bark',{msg: `user ${data.userName} barked in room ${room}`})
+      io.to(room).emit('bark',{msg: `user ${userName} barked in room ${room}`})
     });
   })
-  socket.on('join', (data) => {
-    if (io.sockets.adapter.rooms.has(data.roomId)){
-      if (data.userId) {
-        console.log(`join received from user ${data.userId} ${data.userName} to room: ${data.roomId}`);
-        socket.join(data.roomId)
-        io.to(data.roomId).emit('join',{userName: data.userName, userId: data.userId})
+
+  socket.on('join', ({roomId, userName, userId}) => {
+    console.log(`join received from user ${userId} ${userName} to room: ${roomId}`);
+    socket.data = {userId, userName};
+
+    if (io.sockets.adapter.rooms.has(roomId)){
+
+      let roommates = [];
+      let room = io.sockets.adapter.rooms.get(roomId);
+      room.forEach((socketId)=>{
+        let socket = io.sockets.sockets.get(socketId);
+        roommates.push(socket.data)
+      })
+      console.log('roommates', roommates );
+
+      if (userId) {
+        socket.join(roomId)
+        io.to(roomId).emit('join',{userName, userId, roommates})
       } else {
-        console.log(`join received from player ${data.userName} to room: ${data.roomId}`);
+        console.log(`join received from player ${userName} to room: ${roomId}`);
         var playerId = playerIds.getFreeId();
         if (playerId) {
-          socketsData[socket.id] = {};
-          socketsData[socket.id].userId = playerId;
-          socketsData[socket.id].userName = data.userName;
-          socketsData[socket.id].roomId = data.roomId;
-          console.log(`player's id assigned ${playerId} ${data.userName}`);
-          socket.join(data.roomId)
+          socket.data.userId = playerId;
+          console.log(`player's id assigned ${playerId} ${userName}`);
+          socket.join(roomId)
           socket.emit('joined',{playerId: playerId})
-          io.to(data.roomId).emit('join',{userName: data.userName, userId: playerId})
+
+          io.to(roomId).emit('join',{userName, userId: playerId, roommates })
         } else { console.log('failed');}
       }
     } else {
-      console.log(`${data.userName} failed to join. Room ${data.roomId} does not exist`);
-      socket.emit('joined',{})
+      console.log(`${userName} failed to join. Room ${roomId} does not exist`);
+      //socket.emit('joined',{})
     }
+    logRooms()
   });
 
-  socket.on('create', (data) => {
-    console.log(`create received for room ${data.id} ${data.userName}`);
-    socketsData[socket.id] = {};
-    socketsData[socket.id].userId = data.id;
-    socketsData[socket.id].userName = data.userName;
-    socketsData[socket.id].roomId = data.id;
-    socket.join(data.id);
-    io.to(data.id).emit('create',{})
+  socket.on('create', ({roomId, userName, userId}) => {
+    console.log(`create received for room ${roomId}`);
+    socket.data = {userId, userName};
+
+    socket.join(roomId);
+    io.to(roomId).emit('create',{})
+
+    logRooms()
   })
-  socket.on('start', (data) => {
-    console.log(`start received for room: ${data.roomId}`)
-    io.to(data.roomId).emit('start',{})
+
+  socket.on('start', ({roomId}) => {
+    console.log(`start received for room: ${roomId}`)
+
+    io.to(roomId).emit('start',{})
   })
-  socket.on('choice', (data) => {
-    console.log(`choice received for room: ${data.roomId} from user ${data.userId} on question ${data.questionInd} with choice: ${data.choiceInd}`)
-    io.to(data.roomId).emit('choice',{userId: data.userId, questionInd: data.questionInd, choiceInd: data.choiceInd})
+
+  socket.on('choice', ({roomId, userId, questionInd, choiceInd}) => {
+    console.log(`choice received for room: ${roomId} from user ${userId} on question ${questionInd} with choice: ${choiceInd}`)
+
+    io.to(roomId).emit('choice',{userId, questionInd, choiceInd})
   })
-  socket.on('next', (data) => {
-    console.log(`next received for room: ${data.roomId} with question (# ${data.questionInd}): ${data.question.text}  with choices: ${data.choices}`)
-    io.to(data.roomId).emit('next',{question:data.question, questionInd: data.questionInd})
+
+  socket.on('next', ({roomId, questionInd, question}) => {
+    console.log(`next received for room: ${roomId} with question (# ${questionInd}): ${question.text}  with choices: ${question.choices}`)
+
+    io.to(roomId).emit('next',{question, questionInd})
   })
-  socket.on('end', (data) => {
-    console.log(`end received for room: ${data.roomId} with scores: ${data.scores}`);
-    logJson(data.scores)
-    io.to(data.roomId).emit('end',data)
+
+  socket.on('result', ({roomId,scores}) => {
+    console.log(`result received for room: ${roomId} with scores: ${scores}`);
+    logJson(scores)
+    io.to(roomId).emit('result',{scores})
   })
-  socket.on('reveal', (data) => {
-    console.log(`reveal received for room: ${data.roomId} choiceInd: ${data.choiceInd}`);
-    io.to(data.roomId).emit('reveal',{choiceInd:data.choiceInd})
+
+  socket.on('reveal', ({roomId, choiceInd}) => {
+    console.log(`reveal received for room: ${roomId} choiceInd: ${choiceInd}`);
+
+    io.to(roomId).emit('reveal',{choiceInd})
   })
-  socket.on('disconnect', () => {
-    console.log(`socket disconnect recieved: ${socket.id}`);
-    if (socketsData[socket.id]){
-      console.log("socket was found");
-      if (socketsData[socket.id].roomId){
-        console.log("socket room was found");
-        io.to(socketsData[socket.id].roomId).emit('leave',{userId: socketsData[socket.id].userId, userName: socketsData[socket.id].userName})
-        console.log("leave event emitted");
-      } else {console.log("didn't find socket's room");}
-      console.log(playerIds.deleteId(socketsData[socket.id].userId));
-      playerIds.visualize();
-      console.log(`${socketsData[socket.id].userId} ${socketsData[socket.id].userName} disconnected`);
-      delete socketsData[socket.id];
-      console.log("socketsData deleted");
-    } else {console.log("socket wasnt found in socketsData");}
+
+  socket.on('disconnecting', () => {
+    console.log(`socket disconnect recieved: ${socket.id}`)
+    console.log('socket rooms', socket.rooms)
+
+    socket.rooms.forEach((roomId)=>{
+      console.log('emit leave to', roomId)
+      io.to(roomId).emit('leave', {userId: socket.data.userId, userName: socket.data.userName, socketId: socket.id}) 
+    })
+
+    if (socket.data.userId?.length == 5) { // if PlayerId
+      console.log(playerIds.deleteId(socket.data.userId))
+      playerIds.visualize()
+    }
+
+    logRooms()
   });
 });

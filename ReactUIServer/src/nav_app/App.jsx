@@ -4,11 +4,16 @@ import { Header } from "./Header";
 import { ViewProfile } from "./ViewProfile";
 import { user } from "../data.mjs";
 import { useNavigate } from "react-router-dom";
-import { callView } from "../main";
+
 
 
 
 export let currentView;
+
+export function callView(jsxElement, name){
+  console.log('sdfsf',jsxElement);
+  return {jsxElement, name}
+}
 
 
 function App() {

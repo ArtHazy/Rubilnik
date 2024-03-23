@@ -8,7 +8,7 @@ import addSvg from '../assets/add.svg'
 import backSvg from '../assets/back.svg'
 import deleteSvg from '../assets/delete.svg'
 import { useNavigate } from 'react-router-dom';
-import { callView } from '../main';
+import { callView } from "./App";
 
 /**
  * @param {{set_view, question:Question, quiz:Quiz}} args 

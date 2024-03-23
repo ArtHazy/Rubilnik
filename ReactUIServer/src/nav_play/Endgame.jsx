@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react"
 
 
-const Endgame = ({scores, scoresToParent}) => {
+const Endgame = ({scores}) => {
   const connected =JSON.parse(localStorage.getItem('connections'))
   console.log("Received scores :", scores)
   console.log("Connected people:", connected)
-  connected.push({userName: "console.log", userId:"BBBBB"})
+  // connected.push({userName: "console.log", userId:"BBBBB"})
 
   const modifiedObj = (object) => {
     console.log("Object before mutating:", object)
@@ -27,9 +27,9 @@ const Endgame = ({scores, scoresToParent}) => {
     }
 
   let notZeros = []
-    for (var k = 0; k < modifiedScores.length; k++) {
-      notZeros.push(modifiedScores[k].userId);
-    }
+  for (var k = 0; k < modifiedScores.length; k++) {
+    notZeros.push(modifiedScores[k].userId);
+  }
   console.log("Not zeros (people with scores):", notZeros)
 
   let zeros = connected.filter(usr => notZeros.indexOf(usr.userId) == -1);
@@ -42,9 +42,6 @@ const Endgame = ({scores, scoresToParent}) => {
   let finalScores = modifiedScores
 
   const [ScoreComp, setScoreComp] = useState(renderScores(finalScores))
-  useEffect(() => {
-    scoresToParent(modifiedScores)
-  }, [ScoreComp])
   
   
   function renderScores(arr) {

@@ -22,9 +22,11 @@ export const ViewJoin = (args) => {
             <div className="spacer-default" />
             <div>Room</div>
             <div className="spacer-default" />
-            <input placeholder="room key" minLength={limits.roomKeyLength} maxLength={limits.roomKeyLength} />
+            <input id='key-input' placeholder="room key" minLength={limits.roomKeyLength} maxLength={limits.roomKeyLength} />
             <div className="spacer-default" />
-            <button>Join</button>
+            <button onClick={()=>{
+                navigate(`/play/${document.getElementById('key-input').value}`)
+            }}>Join</button>
         </div>
     );
 };

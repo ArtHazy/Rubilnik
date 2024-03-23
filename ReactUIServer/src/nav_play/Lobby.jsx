@@ -1,15 +1,17 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react"
 
-const Lobby = ({users, passStartFlag, roomId, socket}) => {
+
+const Lobby = ({users, isHost, passStartFlag, roomId, socket}) => {
   console.log('socket', socket);
 
-  if (socket){
+  if (socket && socket.connected){
     return (
       <div className="lobby game_geometry">
         <div className="user_count"> <div className="room_id">{roomId}</div><div className="room_helptext">connection code</div></div>
-        {/* <div className="user_card_wrapper gray_scroll">{renderUsers()}</div> */}
-        <button className="start_button" onClick={() => passStartFlag(true)}>START</button>
+        {isHost? <button className="start_button" onClick={() => {
+          socket.emit('start', {roomId})
+        }}>START</button> : null} 
       </div>
     )
   } else {

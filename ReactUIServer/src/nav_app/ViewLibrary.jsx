@@ -7,7 +7,7 @@ import add_svg from '../assets/add.svg'
 import delete_svg from '../assets/delete.svg'
 import { ViewQuestionList } from './ViewQuestionList';
 import { useNavigate } from 'react-router-dom';
-import { callView } from '../main';
+import { callView } from "./App";
 
 /**
  * @param {{set_view}} 

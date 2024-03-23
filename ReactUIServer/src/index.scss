@@ -327,7 +327,18 @@ html,body,#root {
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-  
+
+    &.bg-image{
+      background-position: 'center';
+      background-size: 'cover';
+      background-repeat: 'no-repeat';
+      &.dark{
+        background-image: url('./assets/bg_b.png');
+      }
+      &.light{
+        background-image: url('./assets/bg_w.png');
+      }
+    }
 
 
     .timer{
@@ -499,13 +510,9 @@ html,body,#root {
     
     
     .question_next_btn{
-      right: 0;
-      left: 0;
-      bottom: 0;
-      
       color: #242424 !important;
       border-color: #242424;
-      margin: .5cm auto;
+      margin: .5cm .5cm .5cm auto;
     } 
     
     
@@ -537,7 +544,7 @@ html,body,#root {
     }
     
     .logo_down{
-      margin: 0.5cm auto;
+      margin: 0.2cm auto;
 
       background-color: #242424;
       padding: 5px 10px;

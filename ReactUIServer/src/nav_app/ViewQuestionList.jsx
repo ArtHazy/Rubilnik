@@ -8,7 +8,7 @@ import back_svg from "../assets/back.svg"
 import { Footer } from "./Footer"
 import { local_store_user, user } from "../data.mjs"
 import { useNavigate } from "react-router-dom"
-import { SERVER_URL, callView } from "../main"
+import { callView } from "./App";
 import { ViewLibrary } from "./ViewLibrary"
 
 
@@ -72,7 +72,7 @@ export const ViewQuestionList = ({set_view,quiz,quizInd})=>{
                     }}><img src={add_svg} className="icon"/></button>
                     
                     <button onClick={()=>{ // start host
-                        navigate('/play', {state: {quiz, ind: quizInd}})
+                        navigate(`/play/${user.id}`, {state: {quiz, ind: quizInd}})
                     }}><img src={play_svg} className="icon"/></button>
                 </div>
             </Footer>
