@@ -2,13 +2,13 @@
 import { useEffect, useState } from "react"
 
 
-const Lobby = ({users, isHost, passStartFlag, roomId, socket}) => {
+const ViewLobby = ({users, isHost, passStartFlag, roomId, socket}) => {
   console.log('socket', socket);
 
   if (socket && socket.connected){
     return (
       <div className="lobby game_geometry">
-        <div className="user_count"> <div className="room_id">{roomId}</div><div className="room_helptext">connection code</div></div>
+        <div className="room_id">{roomId}</div><div className="room_helptext">connection code</div>
         {isHost? <button className="start_button" onClick={() => {
           socket.emit('start', {roomId})
         }}>START</button> : null} 
@@ -17,10 +17,10 @@ const Lobby = ({users, isHost, passStartFlag, roomId, socket}) => {
   } else {
     return <div>
       Failed to connect socket
-    </div>
+    </div> 
   }
   
 
 }
 
-export default Lobby
+export default ViewLobby

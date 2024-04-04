@@ -1,122 +1,115 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { json, useLocation, useParams } from "react-router-dom";
-import bg_w from '../assets/bg_w.png';
-import bg_b from '../assets/bg_b.png';
-import Lobby from "./Lobby";
-import { useEffect, useState } from "react";
-import Game from "./Game";
-import Endgame from "./Endgame";
-import { io } from "socket.io-client";
-import { SERVER_URL } from "../main";
-import { local_get_user, user } from "../data.mjs";
-import { Header } from "../nav_app/Header";
+/* eslint-disable react/prop-types */
+
+import { useEffect, useState } from "react"
+import { Quiz } from "../classes.mjs"
+
+let user = JSON.parse(localStorage.getItem('self-user'))
+  console.log('user', user);
+let guest = JSON.parse(localStorage.getItem('self-guest'))
+  console.log('guest', guest);
+
+/**
+ * 
+ * @param {{quiz: Quiz}}
+ * @returns 
+ */
+const ViewGame = ({isHost, quiz, socket, roomId}) => {
+  const [isLayoutV, setIsLayoutV] = useState(window.innerWidth<window.innerHeight)
+  window.onresize = () => {
+    if (window.innerWidth<window.innerHeight) setIsLayoutV(true)
+    else setIsLayoutV(false)
+  }
+
+  const colors = ["#709B95", "#F08A5D", "#B83B5E", "#D9D9D9"]
+  const wrongColors = ["#4A605D", "#8A5741", "#6E3041", "#7F7F7F"]
+  const letters = ["А", "Б", "В", "Г"]
+
+  const [currentQuestionInd, setCurrrentQuestionInd] = useState(0)
+  const [currentQuestion, setCurrentQuestion] = useState(null)
 
 
 
-const ViewGame = () => {
-  //console.log('render');
-  const [socket, setSocket] = useState(null)
+  const [isRevealed, setIsRevealed] = useState(false)
+  const isLastQ = (currentQuestionInd == quiz?.questions.length-1)
 
-  const [count, setCount] = useState(0)
-  
+  // isHost
+  // quiz
 
-  const { roomId } = useParams()
-  const {state} = useLocation()
-  const quiz = state?.quiz
-  const isHost = state? true: false
-  const [gameState, setGameState] = useState('lobby')
-  const [scores, setScores] = useState(null)
-
-
-  
-  const [roommates, SetRoommates] = useState([])
-
-
-  console.log(socket)
-  useEffect(() =>{
-    console.log('effect')
-
-    
-
-    let socket = io(SERVER_URL)
-    console.log(socket)
-    setSocket(socket)
-
-
-    socket.emit(isHost? 'create' : 'join', {roomId, userName: user.name, userId: user.id} )
-
-    socket.on('join', ({userName, userId, roommates})=>{
-      alert(userId+" "+userName+' joined')
-      SetRoommates(roommates)
-      
-    });
-  
-    socket.on('leave', ({userName, userId, socketId, roommates})=>{
-      alert(userId|socketId +" "+userName+' left')
-      SetRoommates(roommates)
-    });
-  
-    socket.on('bark', ({msg}) => {alert(msg)});
-    
-    socket.on('create', ()=>{alert('room created')});
-
-    socket.on('start',(args)=>{
-      setGameState('in progress')
-    })
-    socket.on('result',({scores})=>{
-      setScores(scores)
-      setGameState('finished')
-    })
-    socket.on('next',()=>{
-      setGameState('in progress')
-    })
-    
-
-    isHost? socket.on('choice', ({userId, choiceInd, questionInd})=>{
-      !revealed? calculateChoice(userId, choiceInd, questionInd) : null
-    })
+  useEffect(() => {
+    console.log(socket);
+    isHost? socket.emit('next',({roomId, questionInd: currentQuestionInd, question: quiz?.questions[currentQuestionInd]})) 
     : null
 
-    return () => {
-      socket.off();
-      socket.disconnect();
-    };
-
-  }, []);
-
-
-
-  
-
-  console.log(socket);
-  if (!socket || !socket.connected) return <div>failed to connect<button onClick={()=>{setCount(count+1)}}>{count}</button></div>
+    socket.on('next',({questionInd, question})=>{
+      setIsRevealed(false)
+      setCurrrentQuestionInd(questionInd)
+      setCurrentQuestion(question)
+    })
     
-    return <div className="ViewGame">
+    socket.on('reveal',({correctChoicesInd})=>{
+      setIsRevealed(true);
+      console.log('revealed', isRevealed);
+    })
 
-      <Header>{socket.id}</Header>
+  },[])
 
-      {gameState === 'lobby' ? <Lobby isHost={isHost} socket={socket} roomId={roomId}/> : null}
-      {gameState === 'in progress' ? <Game isHost={isHost} socket={socket} roomId={roomId} quiz={quiz} setGameState={setGameState}/>: null}
-      {gameState === 'finished' ? <Endgame scores={scores}/> : null}
+  function renderChoices() {
+    return currentQuestion?.choices.map((choice,choiceInd) => 
+      isHost? 
+        <div key={JSON.stringify(choice)} style={{backgroundColor: colors[choiceInd],}} className={"answer "+(!isLayoutV? "wide ":null) } >  
+          {choice.text}
+          <div className="letter">{letters[choiceInd]}</div>
+        </div>
+      :
+        <button key={JSON.stringify(choice)} style={{backgroundColor: colors[choiceInd]}} className={"answer "+(!isLayoutV? "wide ":null) } onClick={()=>{
+          socket.emit('choice', ({roomId, userId: user? user.id : (guest? guest.id : null), questionInd: currentQuestionInd, choices: [choiceInd] }))
+        }}>  
+          {choice.text}
+          <div className="letter">{letters[choiceInd]}</div>
+        </button>
+    )}
+    
+  function renderRevealedChoices() {
+    return currentQuestion?.choices.map((choice, ind)=>
+      <div key={JSON.stringify(choice)} 
+        style={(choice.isCorrect ? {backgroundColor: colors[ind]} : {backgroundColor: wrongColors[ind]})} className="answer">
+        {choice.text}
+        <div className="letter">{letters[ind]}</div>
+      </div>)
+  }
 
+    
 
+  return (
+    <div className="game_geometry">
+      <div className="head">
+        <div className="question_title">{currentQuestion?.text}</div>
+        <div className="question_numbers">{currentQuestionInd+1}/{quiz?.questions.length}</div>
+      </div>
+      <div className="body">
+        <div className={"question " + (isLayoutV? null : "wide ") }>{ isRevealed ? renderRevealedChoices() : renderChoices()}</div>
+      </div>
+      <div className="action-buttons">
+        {isHost? <button onClick={()=>{
+          setIsRevealed(true)
+          let correctChoicesInd = []
+          quiz.questions[currentQuestionInd].choices.forEach((choice, index)=>{
+            choice.isCorrect? correctChoicesInd.push(index) : null
+          })
 
-      <button onClick={()=>socket.emit('bark', {userName: user.name})}>
-        bark
-      </button>
-      <button onClick={()=>{setCount(count+1)}}>{count}</button>
+          socket.emit('reveal', {roomId, correctChoicesInd})
+        }}>reveal</button> 
+        : null}
 
-      <div style={{left:0, right:0, margin:'auto' }}>connected players: {roommates?.length} </div>
-
-      <div className="hstack" style={{overflow: 'scroll'}}>
-        {roommates?.map((player)=>
-          <div className="user_card hstack" style={{width:'fit-content'}}>
-            <div>{player.userName}</div>
-          </div>
-        )}
+        {isHost? <button className="question_next_btn" onClick={()=>{
+          !isLastQ? socket.emit('next', {roomId, questionInd: currentQuestionInd+1, question: quiz.questions[currentQuestionInd+1]})
+          :         socket.emit('end', {roomId} )
+        }}> {!isLastQ? 'Next' : 'End'} </button> 
+        : null}
       </div>
 
     </div>
+  )
 }
 
 export default ViewGame

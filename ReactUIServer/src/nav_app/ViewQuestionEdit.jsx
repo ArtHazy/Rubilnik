@@ -66,7 +66,7 @@ export const ViewQuestionEdit = ({set_view, question, quiz}) => {
                         question.choices.length < limits.maxChoices ? question.choices.push(new Choice('new', false)) : alert_limit()
                         update()
                     }}>
-                        <img src={addSvg} className='icon' />
+                        <img src={addSvg} alt='add' className='icon' />
                     </button>
                 </div>
             </Footer>

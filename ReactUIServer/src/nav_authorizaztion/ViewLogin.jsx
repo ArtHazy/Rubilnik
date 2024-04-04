@@ -56,6 +56,9 @@ export const ViewLogin = () => {
             <a href="/register">
                 <small>register</small>
             </a>
+            <a href="/join">
+                <small>join the game</small>
+            </a>
 
             
         </div>

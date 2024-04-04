@@ -1,1 +1,1 @@
-console.log(Object.keys({}));
+console.log(JSON.parse('null')); ;

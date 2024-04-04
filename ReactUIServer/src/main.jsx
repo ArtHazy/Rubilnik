@@ -6,12 +6,13 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import ViewGame from './nav_play/ViewGame.jsx';
+import Play from './nav_play/Play.jsx';
 import { ViewLogin } from './nav_authorizaztion/ViewLogin.jsx';
 import { ViewRegister } from './nav_authorizaztion/ViewRegister.jsx';
+import { ViewJoin } from './nav_app/ViewJoin.jsx';
 
 
-export const SERVER_URL = "http://192.168.0.187:3000"
+export const SERVER_URL = "http://127.0.0.1:3000"
 /**
  * 
  * @param {()=>React.JSX.Element} jsxElement 
@@ -27,7 +28,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/play/:roomId",
-    element: <ViewGame />,
+    element: <Play />,
   },
   {
     path: "/login",
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <ViewRegister />,
+  },
+  {
+    path: "/join",
+    element: <ViewJoin />,
   },
 
 ]);

@@ -45,17 +45,14 @@ import {
   IdTree
 } from "./algorithms.mjs";
 
-
 async function clearDB(){
   await deleteAllUsers()
 }
 
 
 // At Start
-clearDB()
+// clearDB()
 var userIds = new IdTree(4)
-var playerIds = new IdTree(5);
-// var socketsData = {};
 
 
 app.post('/hi', (req,res)=>{
@@ -142,20 +139,40 @@ app.post('/user/verify',(req,res)=>{
   //   }
   // }
 
+
+
+io.on('connection', (socket) => {
+
   function logRooms(){
     io.sockets.adapter.rooms.forEach((clients, roomId)=>{
       console.log('Room', roomId, ":", clients);
     })
   }
+  
+  /**
+   * 
+   * @param {string} roomId 
+   * @returns {{}} roommates {userId?:string : {name?:string}, ...}
+   */
+  function getRoommates(roomId){
+    let roommates = {}
+    let room = io.sockets.adapter.rooms.get(roomId);
+    room.forEach((socketId)=>{
+      let socket = io.sockets.sockets.get(socketId);
+      let id = socket.data.userId;
+      let name = socket.data.userName;
+      roommates[id] = {name}
+    })
+    return roommates
+  }
 
 
-io.on('connection', (socket) => {
   console.log(`socket connect recieved: ${socket.id}`);
   logRooms()
   
-  socket.on('bark', ({userName}) => {
+  socket.on('bark', ({userName,guestName}) => {
     socket.rooms.forEach((room) => {
-      io.to(room).emit('bark',{msg: `user ${userName} barked in room ${room}`})
+      io.to(room).emit('bark',{msg:   `user ${userName} barked in room ${room}`})
     });
   })
 
@@ -165,29 +182,18 @@ io.on('connection', (socket) => {
 
     if (io.sockets.adapter.rooms.has(roomId)){
 
-      let roommates = [];
-      let room = io.sockets.adapter.rooms.get(roomId);
-      room.forEach((socketId)=>{
-        let socket = io.sockets.sockets.get(socketId);
-        roommates.push(socket.data)
-      })
+      socket.join(roomId)
+
+      let roommates = getRoommates(roomId)
+      
+
       console.log('roommates', roommates );
+      console.log(socket.rooms);
 
-      if (userId) {
-        socket.join(roomId)
-        io.to(roomId).emit('join',{userName, userId, roommates})
-      } else {
-        console.log(`join received from player ${userName} to room: ${roomId}`);
-        var playerId = playerIds.getFreeId();
-        if (playerId) {
-          socket.data.userId = playerId;
-          console.log(`player's id assigned ${playerId} ${userName}`);
-          socket.join(roomId)
-          socket.emit('joined',{playerId: playerId})
+      
+      io.to(roomId).emit('join',{userName, userId, roommates})
+      socket.emit('joined',{roommates})
 
-          io.to(roomId).emit('join',{userName, userId: playerId, roommates })
-        } else { console.log('failed');}
-      }
     } else {
       console.log(`${userName} failed to join. Room ${roomId} does not exist`);
       //socket.emit('joined',{})
@@ -200,7 +206,9 @@ io.on('connection', (socket) => {
     socket.data = {userId, userName};
 
     socket.join(roomId);
+    let roommates = getRoommates(roomId)
     io.to(roomId).emit('create',{})
+    io.to(roomId).emit('joined',{roommates})
 
     logRooms()
   })
@@ -211,10 +219,10 @@ io.on('connection', (socket) => {
     io.to(roomId).emit('start',{})
   })
 
-  socket.on('choice', ({roomId, userId, questionInd, choiceInd}) => {
-    console.log(`choice received for room: ${roomId} from user ${userId} on question ${questionInd} with choice: ${choiceInd}`)
+  socket.on('choice', ({roomId, userId, userName, questionInd, choices}) => {
+    console.log(`choice received for room: ${roomId} from user ${userId} on question ${questionInd} with choice: ${choices}`)
 
-    io.to(roomId).emit('choice',{userId, questionInd, choiceInd})
+    io.to(roomId).emit('choice',{userId, userName, questionInd, choices})
   })
 
   socket.on('next', ({roomId, questionInd, question}) => {
@@ -223,32 +231,41 @@ io.on('connection', (socket) => {
     io.to(roomId).emit('next',{question, questionInd})
   })
 
-  socket.on('result', ({roomId,scores}) => {
-    console.log(`result received for room: ${roomId} with scores: ${scores}`);
-    logJson(scores)
-    io.to(roomId).emit('result',{scores})
+  socket.on('end', ({roomId}) => {
+    console.log(`end received for room: ${roomId}`);
+    io.to(roomId).emit('end',{})
   })
 
-  socket.on('reveal', ({roomId, choiceInd}) => {
-    console.log(`reveal received for room: ${roomId} choiceInd: ${choiceInd}`);
+  socket.on('scores', ({roomId, usersScores}) =>{
+    console.log(`result received for room: ${roomId}`);
+    io.to(roomId).emit('scores',{usersScores})
+  })
 
-    io.to(roomId).emit('reveal',{choiceInd})
+  socket.on('reveal', ({roomId, correctChoicesInd}) => {
+    console.log(`reveal received for room: ${roomId} choiceInd: ${correctChoicesInd}`);
+
+    io.to(roomId).emit('reveal',{correctChoicesInd})
   })
 
   socket.on('disconnecting', () => {
     console.log(`socket disconnect recieved: ${socket.id}`)
     console.log('socket rooms', socket.rooms)
 
+
+
     socket.rooms.forEach((roomId)=>{
       console.log('emit leave to', roomId)
-      io.to(roomId).emit('leave', {userId: socket.data.userId, userName: socket.data.userName, socketId: socket.id}) 
+      let roommates = getRoommates(roomId)
+      
+
+      roommates[socket.id] = undefined
+      io.to(roomId).emit('leave', {userId: socket.data.userId, userName: socket.data.userName, socketId: socket.id, roommates})
     })
 
-    if (socket.data.userId?.length == 5) { // if PlayerId
-      console.log(playerIds.deleteId(socket.data.userId))
-      playerIds.visualize()
-    }
+    socket.on('disconnect', () =>{
+      logRooms()
+    })
 
-    logRooms()
   });
+
 });

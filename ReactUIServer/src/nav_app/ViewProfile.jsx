@@ -11,6 +11,7 @@ export const ViewProfile = (args) => {
     function update(){ set_flag(!flag)}
 
     return <div className='ViewProfile'>
+        <div>user id: {user.id}</div>
         <div>edit name</div>
         <div className='spacer-default'></div>
         <input value={user.name} maxLength={limits.maxNameLength} onChange={(e)=>{

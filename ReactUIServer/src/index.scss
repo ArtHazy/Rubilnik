@@ -211,6 +211,8 @@ html,body,#root {
     display: flex;
     flex-direction: row;
     justify-content: safe center;
+    align-items: center;
+    //flex-shrink: 0;
   }
 
   
@@ -239,6 +241,7 @@ html,body,#root {
     justify-items: center;
     align-items: center;
   }
+
   .App {
     @extend .full-screen, .vstack;
     font-family: inherit;
@@ -250,18 +253,7 @@ html,body,#root {
       
     // }
 
-    .ViewProfile, .ViewJoin, .ViewQuizEdit, .ViewQuestionEdit, .ViewQuestionList{
-      @extend .view;
-      box-sizing: border-box;
-
-    }
-    .ViewProfile, .ViewJoin{
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      
-      justify-self: center
-    }
+    
     .ViewQuestionList, .ViewQuestionEdit{
       .grid-questionList, .grid-choicesList{
         @extend .grid;
@@ -305,9 +297,22 @@ html,body,#root {
     }
     
   }
+
+  .ViewProfile, .ViewJoin, .ViewQuizEdit, .ViewQuestionEdit, .ViewQuestionList{
+    @extend .view;
+    box-sizing: border-box;
+
+  }
+  .ViewProfile, .ViewJoin{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+    justify-self: center
+  }
   
   
-  .ViewGame {
+  .Play {
     @extend .full-screen, .vstack;
     font-family: inherit;
     margin-bottom: auto;
@@ -367,6 +372,22 @@ html,body,#root {
         margin-right: .5cm;
       }
     }
+    .connected-counter{
+      box-sizing: border-box;
+      padding: .1cm;
+      left:0;
+      right:0;
+      margin: 0 auto;
+    }
+
+    .display-connected{
+      box-sizing: border-box;
+      padding: .1cm;
+      overflow: scroll;
+      width: 100%;
+      height: fit-content;
+      flex-shrink: 0;
+    }
     
     .game-layout {
       box-sizing: border-box;
@@ -402,7 +423,7 @@ html,body,#root {
           word-break: break-all;
           flex-grow: 1;
           box-sizing: border-box;
-          color: #242424;
+          color: var(--color-light);
           vertical-align: start;
           text-align: start;
           @extend .vstack;
@@ -418,11 +439,31 @@ html,body,#root {
           padding: .2cm;
           line-height: 1em;
           text-align: end;
-          color: #242424;
+          color: var(--color-light);
         }
       }
+
       .body{
+        @extend .vstack;
         height: 80%;
+        justify-content: center;
+        .question {
+          height: fit-content;
+          width: 100%;
+          box-sizing: border-box;
+          background-color: #242424;
+          color: #d68b81;
+          border-radius: 5px;
+          display: grid;
+          grid-template-columns: 1fr;
+          &.wide{
+            grid-template-columns:  repeat(2, 1fr);
+            height: 100%;
+          }
+          gap: .5cm;
+          align-items: center;
+          padding: 15px;
+        }
         .answer {
           @extend .dynamic-font;
           word-break: break-all;
@@ -430,7 +471,9 @@ html,body,#root {
           padding: .5cm;
           box-sizing: border-box;
           color: #242424;
-          height: 100%;
+          &.wide{
+            height: 100%;
+          }
           width: 100%;
           border-radius: 5px;
           display: flex;
@@ -439,99 +482,87 @@ html,body,#root {
           position: relative;
         }
       }
+
       .user-scores{
         @extend .grid;
-        grid-template-columns: repeat(auto-fit, minmax(5cm,1fr));
+        //grid-template-columns: repeat(auto-fit, minmax(5cm,1fr));
+        grid-template-columns: 1fr;
+        column-gap: 2cm;
         //margin: .5em;
         .user-score{
           @extend .grid;
-          grid-template-columns: max-content 1fr max-content;
-          max-width: 580px;
-          height: 70px;
-          .index {
+          grid-template-columns: 2cm 1fr 2cm;
+          max-width: 16cm;
+          .tile{
+            box-sizing: border-box;
+            color: var(--color-dark);
+            background-color: #B0B0B0;
+            padding: .2cm;
+            width: 100%;
             border-radius: 5px;
             display: flex;
             flex-direction: row;
             justify-content: center;
             align-items: center;
-            background-color: #D9D9D9;
+          }
+          .index {
+            @extend .tile;
           }
           .name {
-            background-color: #B0B0B0;
-            border-radius: 5px;
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
+            @extend .tile;
           }
           .score {
-            background-color: #B0B0B0;
-            border-radius: 5px;
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
+            @extend .tile;
+          }
+          .first{
+            background-color: #e8af4b;
           }
         }
       }
       
+      .action-buttons {
+        @extend .hstack;
+        justify-content: end;
+        padding: .5cm;
+        button{
+          margin-left: 1cm;
+        }
+      }
+
     }
     .user_card {
+      box-sizing: border-box;
       background-color: #B0B0B0;
       border-radius: 5px;
-      color: #242424;
-      font-size: 1.5em;
-      margin: .1cm;
       padding: .1cm;
+      margin: 0 .2cm;
+
     }
     .room_id{
       color: #709B95;
-      font-size: 15vw;
+      font-size: max( 3em, 15vw);
       text-align: center;
     }    
     .room_helptext{
       opacity: 20%;
-      font-size: 5vw;
+      font-size: max( 1em, 5vw);
       text-align: center;
     }
     
     .start_button{
-      // margin-left: 10px;
-      // margin-top: 40px;
-      // padding-right: 400px;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
       margin: 0 auto;
-      // color: #D9D9D9 !important;
-      // border-color: #D9D9D9 !important;
+      margin-top: 1cm;
     }
     
-    
+
     .question_next_btn{
       color: #242424 !important;
       border-color: #242424;
-      margin: .5cm .5cm .5cm auto;
+      
     } 
     
     
-    .question {
-      height: 100%;
-      width: 100%;
-      box-sizing: border-box;
-      background-color: #242424;
-      color: #d68b81;
-      border-radius: 5px;
-      display: grid;
-      grid-template-columns: 1fr;
-      &.wide{
-        grid-template-columns:  repeat(2, 1fr);
-      }
-      gap: .5cm;
-      align-items: center;
-      padding: 15px;
-    }
+
     
     
     .letter {
