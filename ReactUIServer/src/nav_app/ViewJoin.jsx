@@ -8,6 +8,7 @@ export const ViewJoin = (args) => {
     // console.log('render');
 
     const [flag, set_flag] = useState(false)
+    const [focus, set_focus] = useState(null)
     let navigate = useNavigate()
 
     function rerender(){ 
@@ -32,9 +33,7 @@ export const ViewJoin = (args) => {
             <input value={user? user.name : guest.name} maxLength={limits.maxNameLength} onChange={(e)=>{
                 user? user.name = e.target.value : guest.name = e.target.value
                 rerender()
-            }}/>
-            <button onClick={()=> {rerender()}}>rerender</button>
-            
+            }}/>            
 
             <div className="spacer-default" />
             <div>Room</div>

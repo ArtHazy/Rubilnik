@@ -77,9 +77,10 @@ html,body,#root {
 
   .view {
     @extend .full-screen;
+    max-width: 30cm;
     font-family: inherit;
-    margin-bottom: 3cm;
     padding: 0.5em;
+    padding-bottom: 3cm;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
@@ -104,6 +105,10 @@ html,body,#root {
     }
     a{
       color: hsla(0%,0,100,50%);
+    }
+    img{
+      margin-bottom: 1.5cm;
+      border-radius: 15px
     }
   }
 
@@ -151,6 +156,7 @@ html,body,#root {
 
     .buttons-container {
       @extend .hstack;
+      border: 2px solid var(--color-dark);
       box-sizing: border-box;
       width: 100%;
       max-width: 6cm;
@@ -250,25 +256,110 @@ html,body,#root {
     overflow: scroll;
     /* justify-content: center; */
     align-items: center;
-      
+    body{
+      @extend .hstack;
+      width: 100%;
+      overflow: scroll;
+    }
     // }
 
-    
     .ViewQuestionList, .ViewQuestionEdit{
       .grid-questionList, .grid-choicesList{
         @extend .grid;
         width: 100%;
 
-        grid-template-columns: minmax(max-content, 1fr) 10fr 1fr;
-        grid-template-areas: 
-          'number' 'button';
+        grid-template-columns: repeat(auto-fill, minmax(1fr,1fr));
 
         .hstack{
           width: 100%
         }
+        button{
+          height: 100%;
+        }
+
+        .list-item{
+          @extend .vstack;
+          width: 100%;
+          height: fit-content;
+          flex-grow: 1;
+          .question {
+            display: grid;
+            grid-template-columns: 1cm 1fr 1cm;
+            align-items: center;
+            justify-items: center;
+
+            .b-question{
+              position: relative;
+              grid-row: 1 / 1;
+              grid-column: 1 / 4;
+              width: 100%;
+            }
+            .index{
+              z-index: 1;
+              color: #242424;
+              grid-row: 1 / 2;
+              grid-column: 1 / 2;
+            }
+
+            .dropdown{
+              z-index: 1;
+              color: #242424;
+              grid-row: 1 / 2;
+              grid-column: 3 / 4;
+              cursor: pointer;
+              position: relative;
+
+              .content{
+                @extend .vstack;
+                display: none;
+                position: absolute;
+                left: -1cm;
+              }
+              &:hover .content{
+                display: flex;
+              }
+            }
+
+            // .b-delete{
+            //   @media (hover:hover){
+            //     display: none;
+            //   }
+            // }
+            // &:hover .b-delete{
+            //   display: block;
+            // }
+          }
+          .choices{
+            padding: .5cm;
+            border-radius: .2cm;
+            background: var(--color-not-so-dark);
+            .choice-grid{
+              display: grid;
+              align-items: center;
+              justify-items: center;
+              width: 100%;
+
+              grid-template-columns: 1cm 3fr 1cm;
+              .choice{
+                @extend .hstack;
+                height: fit-content;
+              }
+            }
+            &.hidden{
+              display: none;
+            }
+          }
+
+          
+        }
+
+
       }
     }
     .ViewQuestionEdit{
+      @extend .vstack;
+      align-items: center;
+
       .choice{
         flex-grow: 1;
         &.correct{
@@ -278,30 +369,83 @@ html,body,#root {
     }
 
 
+
+    .ViewLibrary .controls-dropdown{
+      position: absolute;
+      right: .5cm;
+      bottom: .5cm;
+    }
+    // .ViewQuestionList .controls-dropdown{
+    //   position: relative;
+    // }
+
+    .ViewLibrary {
+      .controls-dropdown{
+        cursor: pointer;
+        color: var(--color-dark);
+        padding: .2cm;
+        z-index: 3;
+        .content{
+          @extend .vstack;
+          padding: .2cm;
+          border-radius: .1cm;
+          color: var(--color-dark);
+          position: absolute;
+          left: -1cm;
+          display: none;
+          z-index: 2;
+        }
+      }
+      .controls-dropdown:hover .content{
+        display: flex;
+      }
+      .controls{
+        @extend .vstack;
+
+        @media (hover:hover){
+          display:none;
+        }
+      }
+    }
+
     .ViewLibrary {
       @extend .view;
       @extend .vstack;
       align-items: center;
 
-
-      
-
       .grid-tile-container {
         @extend .grid;
-        grid-template-columns: repeat(auto-fit, minmax(6cm, 1fr));
-        max-width: 30cm;
-        button{
-          height: 50px;
+
+        //grid-template-columns: repeat(auto-fit, minmax(6cm, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(6cm, 1fr));
+
+        
+        .tile{
+          @extend .hstack;
+          height: 3cm;
+          position: relative;
+          .quiz-button{
+            height: 100%;
+          }
+        }
+
+
+        .tile:hover .controls{
+          display: flex;
+          height: 100%;
+          button{
+            flex-grow: 1;
+            width: 100%;
+          }
         }
       }
     }
     
   }
 
-  .ViewProfile, .ViewJoin, .ViewQuizEdit, .ViewQuestionEdit, .ViewQuestionList{
+  .ViewProfile, .ViewJoin, .ViewQuizEdit, .ViewQuestionList{
     @extend .view;
     box-sizing: border-box;
-
   }
   .ViewProfile, .ViewJoin{
     display: flex;
@@ -405,7 +549,7 @@ html,body,#root {
 
     .game_geometry {
       .dynamic-font{
-        font-size: max( 1.5em, min(3vw, 3em)) ;
+        font-size: max( 1.5em, min(2.5vw, 3em)) ;
       }
       width: 100%;
       height: 100%;
@@ -540,12 +684,12 @@ html,body,#root {
     }
     .room_id{
       color: #709B95;
-      font-size: max( 3em, 15vw);
+      font-size: max( 3em, 12vw);
       text-align: center;
     }    
     .room_helptext{
       opacity: 20%;
-      font-size: max( 1em, 5vw);
+      font-size: max( 1em, 4vw);
       text-align: center;
     }
     
@@ -560,10 +704,6 @@ html,body,#root {
       border-color: #242424;
       
     } 
-    
-    
-
-    
     
     .letter {
       color: var(--color-dark);

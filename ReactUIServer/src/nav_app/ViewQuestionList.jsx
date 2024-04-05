@@ -19,6 +19,8 @@ import { ViewLibrary } from "./ViewLibrary"
  */
 export const ViewQuestionList = ({set_view,quiz,quizInd})=>{
     const [flag, set_flag] = useState(false)
+    const [focus, set_focus] = useState(-1)
+
     let navigate = useNavigate()
     
     function update() {
@@ -37,26 +39,31 @@ export const ViewQuestionList = ({set_view,quiz,quizInd})=>{
 
             <h3>Questions</h3>
             <div className="grid-questionList">
-                {quiz.questions.map((question,index)=>[
-                    <div>{index}</div>,
-                    <button className="hstack" onClick={()=>{
-                        set_view(callView(()=>ViewQuestionEdit({set_view, question, quiz}), 'Edit question')) 
-                    }} style={{flexGrow:1}}>
-                        <div className="listItem">
-                            {question.text}
+                {quiz.questions.map((question,index)=>
+                    <div className="list-item">
+                        <div className="question">  {/* onClick={()=>{set_view(callView(()=>ViewQuestionEdit({set_view, question, quiz}), 'Edit question'))  */}
+                            <div className="index">{index}</div>
+                            <button className="b-question" onClick={()=>{ focus == index ? set_focus(-1) : set_focus(index) }}> {question.text} </button>
+                            <div className="dropdown">...
+                                <div className="content">
+                                    <button className="b-delete" onClick={()=>{
+                                        focus == index ? set_focus(-1) : null
+                                        quiz.questions.splice(index, 1)
+                                        update()
+                                    }}>delete</button>
+                                </div>
+                            </div>
                         </div>
-                    </button>,
-                    <button onClick={()=>{
-                        quiz.questions.splice(index, 1)
-                        update()
-                    }}>
-                        <img src={delete_svg} className="icon" alt="" />
-                    </button>
-                ])}
+
+                        <div className={"choices "+ (focus==index? null : "hidden") }>
+                            <ViewQuestionEdit set_view={set_view} question={question} quiz={quiz} />
+                        </div>
+                    
+
+                    </div>
+                )}
             </div>
 
-
-            
 
             <Footer bottom='3em'>
                 <div className="buttons-container">

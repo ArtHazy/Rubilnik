@@ -25,22 +25,22 @@ export const ViewQuestionEdit = ({set_view, question, quiz}) => {
     return (
         <div className='ViewQuestionEdit'>
 
-            <h3>Edit Title</h3>
+            <div>Edit Title</div>
 
             <input value={question?.text} maxLength={limits.maxTextLength} onChange={(e) => {
                 question.text = e.target.value
                 update()
             }} style={{width:'100%'}} />
 
-            <h3>Choices</h3>
-            <div className="grid-choicesList">
+            <div>Choices</div>
+            <div className="choice-grid">
                 {question.choices.map((choice, index) => [
                     <input id={`checkbox ${index}`} type="checkbox" style={{width:'1.3em', flexShrink:0}} name={'correct-selection'} checked={choice.isCorrect} onClick={() => {
                         choice.isCorrect = !choice.isCorrect;
                         update()
                         console.log(question.choices);
                     }} />,
-                    <input className={'hstack choice ' + (choice.isCorrect? "correct":null) } value={choice.text} maxLength={limits.maxTextLength} onChange={(e) => {
+                    <input className={'choice ' + (choice.isCorrect? "correct":null) } value={choice.text} maxLength={limits.maxTextLength} onChange={(e) => {
                         choice.text = e.target.value
                         update()
                         console.log(choice.text);
@@ -55,7 +55,15 @@ export const ViewQuestionEdit = ({set_view, question, quiz}) => {
                 ])}
             </div>
 
-            <Footer bottom={'3em'}>
+            <button onClick={() => {
+                question.choices.length < limits.maxChoices ? question.choices.push(new Choice('new', false)) : alert_limit()
+                update()
+            }}>
+                <img src={addSvg} alt='add' className='icon' />
+            </button>
+
+
+            {/* <Footer bottom={'3em'}>
                 <div className="buttons-container">
                     <button onClick={()=>{
                         set_view(callView(()=>ViewQuestionList({set_view, quiz}), `Edit quiz: ${quiz.title}`))
@@ -69,7 +77,7 @@ export const ViewQuestionEdit = ({set_view, question, quiz}) => {
                         <img src={addSvg} alt='add' className='icon' />
                     </button>
                 </div>
-            </Footer>
+            </Footer> */}
 
         </div>
     );

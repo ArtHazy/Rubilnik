@@ -56,12 +56,12 @@ const ViewGame = ({isHost, quiz, socket, roomId}) => {
   function renderChoices() {
     return currentQuestion?.choices.map((choice,choiceInd) => 
       isHost? 
-        <div key={JSON.stringify(choice)} style={{backgroundColor: colors[choiceInd],}} className={"answer "+(!isLayoutV? "wide ":null) } >  
+        <div key={JSON.stringify(choice)} style={{backgroundColor: colors[choiceInd],}} className={"answer "+(!isLayoutV? "wide ":null)} >  
           {choice.text}
           <div className="letter">{letters[choiceInd]}</div>
         </div>
       :
-        <button key={JSON.stringify(choice)} style={{backgroundColor: colors[choiceInd]}} className={"answer "+(!isLayoutV? "wide ":null) } onClick={()=>{
+        <button key={JSON.stringify(choice)} style={{backgroundColor: colors[choiceInd]}} className={"answer "+(!isLayoutV? "wide ":null)} onClick={()=>{
           socket.emit('choice', ({roomId, userId: user? user.id : (guest? guest.id : null), questionInd: currentQuestionInd, choices: [choiceInd] }))
         }}>  
           {choice.text}
@@ -72,7 +72,7 @@ const ViewGame = ({isHost, quiz, socket, roomId}) => {
   function renderRevealedChoices() {
     return currentQuestion?.choices.map((choice, ind)=>
       <div key={JSON.stringify(choice)} 
-        style={(choice.isCorrect ? {backgroundColor: colors[ind]} : {backgroundColor: wrongColors[ind]})} className="answer">
+        style={(choice.isCorrect ? {backgroundColor: colors[ind]} : {backgroundColor: wrongColors[ind]})} className={"answer "+(!isLayoutV? "wide ":null)} >
         {choice.text}
         <div className="letter">{letters[ind]}</div>
       </div>)

@@ -12,9 +12,8 @@ import { ViewRegister } from './nav_authorizaztion/ViewRegister.jsx';
 import { ViewJoin } from './nav_app/ViewJoin.jsx';
 
 
-export const SERVER_URL = "http://127.0.0.1:3000"
+export const SERVER_URL = "http://192.168.0.138:3000"
 /**
- * 
  * @param {()=>React.JSX.Element} jsxElement 
  * @param {string} name 
  * @returns 

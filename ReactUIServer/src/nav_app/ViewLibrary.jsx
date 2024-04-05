@@ -16,6 +16,7 @@ import { callView } from "./App";
 export const ViewLibrary = ({set_view}) => {
 
     const [flag, set_flag] = useState(false)
+    const [focus, set_focus] = useState(null)
 
     function update() {local_store_user(user);set_flag(!flag)}
     let navigate = useNavigate()
@@ -33,15 +34,27 @@ export const ViewLibrary = ({set_view}) => {
 
                 {user.quizzes?.map((quiz, index) => {
                     return (
-                        <div className='hstack' style={{width:'100%'}}>
-                            <button onClick={()=>{
+                        <div className='tile' style={{width:'100%'}}>
+                            <button className='quiz-button'  onClick={()=>{
                                 set_view(callView(()=>ViewQuestionList( {set_view, quiz, quizInd: index} ), `Edit quiz: ${quiz.title} `) )
                             }} style={{flexGrow:1}}> {quiz.title}
+
+                                
+
                             </button>
-                            <button onClick={()=>{
-                                user.quizzes.splice(index, 1);
-                                update()
-                            }} style={{flexShrink:0}}><img src={delete_svg} className='icon'></img></button>
+
+                            <div className="controls-dropdown">
+                                ...
+                                <div className="content">
+                                    <button className='b-delete'  onClick={()=>{
+                                        user.quizzes.splice(index, 1);
+                                        update()
+                                    }}>
+                                        delete
+                                        {/* <img src={delete_svg} className='icon'></img> */}
+                                    </button>
+                                </div>
+                            </div>
                             
                         </div>
                     )

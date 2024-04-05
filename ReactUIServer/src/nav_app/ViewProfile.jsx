@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 
 export const ViewProfile = (args) => {
     const [flag, set_flag] = useState(false)
+    const [focus, set_focus] = useState(null)
+
     let navigate = useNavigate()
     function update(){ set_flag(!flag)}
 
