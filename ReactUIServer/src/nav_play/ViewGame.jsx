@@ -22,7 +22,7 @@ const ViewGame = ({isHost, quiz, socket, roomId}) => {
 
   const colors = ["#709B95", "#F08A5D", "#B83B5E", "#D9D9D9"]
   const wrongColors = ["#4A605D", "#8A5741", "#6E3041", "#7F7F7F"]
-  const letters = ["А", "Б", "В", "Г"]
+  const letters = ["A", "B", "C", "D"]
 
   const [currentQuestionInd, setCurrrentQuestionInd] = useState(0)
   const [currentQuestion, setCurrentQuestion] = useState(null)
@@ -84,7 +84,7 @@ const ViewGame = ({isHost, quiz, socket, roomId}) => {
     <div className="game_geometry">
       <div className="head">
         <div className="question_title">{currentQuestion?.text}</div>
-        <div className="question_numbers">{currentQuestionInd+1}/{quiz?.questions.length}</div>
+        <div className="question_numbers">{currentQuestionInd+1}/3</div> {/* /quiz?.questions.length */}
       </div>
       <div className="body">
         <div className={"question " + (isLayoutV? null : "wide ") }>{ isRevealed ? renderRevealedChoices() : renderChoices()}</div>

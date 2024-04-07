@@ -23,7 +23,9 @@ function App() {
     return (
       <div className={"App"}>
         <Header>
-          {view.name}
+          <div style={{fontSize: '1.2em'}}>
+            {view.name}
+          </div>
         </Header>
 
         <body>

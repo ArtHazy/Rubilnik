@@ -30,7 +30,6 @@ export const ViewQuestionList = ({set_view,quiz,quizInd})=>{
 
     return(
         <div className="ViewQuestionList">
-
             <h3>Quiz title</h3>
             <input type="text" value={quiz.title} onChange={v=>{
                 quiz.title = v.target.value

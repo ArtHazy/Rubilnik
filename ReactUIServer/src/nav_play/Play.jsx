@@ -120,7 +120,7 @@ const Play = () => {
     
     return <div className="Play">
 
-      <Header>{(gameState!=='lobby'? roomId+" " : null) + socket.id}</Header>
+      {/* <Header>{(gameState!=='lobby'? roomId+" " : null) + socket.id}</Header> */}
 
 
       {!joined? <div> failed to join the room. Maybe it doesn't exist </div> : null}
