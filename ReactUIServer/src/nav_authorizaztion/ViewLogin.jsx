@@ -18,7 +18,7 @@ export const ViewLogin = () => {
             {/* <img width='250' height='125' src="https://static1.squarespace.com/static/5e949a92e17d55230cd1d44f/t/61f35a8548933c4ce4cc0daa/1643338381475/HelloLight_Mac.png?format=1500w" alt="welcome banner" /> */}
             {/* <iframe src={banner} ></iframe> */}
 
-                <iframe src={SERVER_URL+'/banner.html'} style={{marginBottom:'2cm', width:'300px', height:'1250px'}} ></iframe>
+                <iframe src={SERVER_URL+'/banner.html'} style={{marginBottom:'2cm', width:'100%', maxWidth:'500px' , height:'300px', borderRadius:'.5cm' , flexShrink:0}} ></iframe>
             
             <div className='hstack'>
                 <div className='log accent'>LOG</div>
