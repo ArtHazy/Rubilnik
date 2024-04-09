@@ -14,9 +14,14 @@ export class IdTree{
     idLength
     //idChars = ['A','B','C'] // testArray
     idChars = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
-    constructor(idLength){
+    /**
+     * @param {number} idLength 
+     * @param {string[]} idChars 
+     */
+    constructor(idLength, idChars){
         this.root=new IdNode(null);
         this.idLength = idLength;
+        idChars? this.idChars = idChars : null
     }
     checkIdString(idString){
         if (typeof idString === 'string' && idString.length==this.idLength){
@@ -108,8 +113,12 @@ export class IdTree{
         _checkNode(this.root);
         return freeId.join('');
     }
-    deleteId(idString){
-        var idArray = this.checkIdString(idString);
+    /**
+     * @param {string} id 
+     * @returns 
+     */
+    deleteId(id){
+        var idArray = this.checkIdString(id);
         if (idArray instanceof Error) {return idArray}
         else {
             var visitor = this.root;
@@ -133,7 +142,7 @@ export class IdTree{
             else {return new Error("failed: ID wasn't found")}
         }
     }
-    visualize() {
+    log() {
         this._visualizeNode(this.root, 0);
     }
     _visualizeNode(node, depth) {
@@ -149,55 +158,3 @@ export class IdTree{
         }
     }
 }
-
-
-// TESTS:
-
-// var idTree = new IdTree(6);
-// console.log(idTree.pushId("AAAAAA"));
-// console.log(idTree.pushId("BAAAAA"));
-// console.log(idTree.deleteId("BAAAAA"));
-// console.log(idTree.getFreeId());
-
-
-// console.log(idTree.pushIdString("ABC"));
-// console.log(idTree.pushIdString("ABB"));
-// console.log(idTree.pushIdString("ACB"));
-// console.log(idTree.pushIdString("ACC"));
-// console.log(idTree.deleteId("ABC")); 
-// console.log(idTree.pushIdString("ABC"));
-// console.log(idTree.pushIdString("AAA"));
-// console.log(idTree.pushIdString("AAB"));
-// console.log(idTree.pushIdString("CAB"));
-// console.log(idTree.pushIdString("CAA"));
-// console.log(idTree.pushIdString("BAA"));
-// console.log(idTree.pushIdString("BAA"));
-// console.log(idTree.pushIdString("BA"));
-// idTree.visualize();
-// console.log(idTree.getFreeId());
-// console.log(idTree.getFreeId());
-// console.log(idTree.getFreeId());
-// console.log(idTree.getFreeId());
-// console.log(idTree.getFreeId());
-// console.log(idTree.getFreeId());
-// console.log(idTree.getFreeId());
-// console.log(idTree.getFreeId());
-// console.log(idTree.getFreeId());
-// console.log(idTree.getFreeId());
-// console.log(idTree.getFreeId());
-// console.log(idTree.getFreeId());
-// console.log(idTree.getFreeId());
-
-// console.log(idTree.deleteId('CCC'));
-// idTree.visualize();
-
-// console.log(idTree.pushId("ABC"));
-// console.log(idTree.pushId("BBC"));
-// console.log(idTree.pushId("BAC"));
-
-
-// idTree.visualize();
-
-// console.log(idTree.deleteId("ABC")); 
-
-// idTree.visualize();
