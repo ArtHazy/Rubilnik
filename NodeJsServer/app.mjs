@@ -29,6 +29,19 @@ app.get('/getTest.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'getTest.html'));
 });
 
+app.get('/banner.html', (req,res)=>{
+  reqNotifier(req)
+  res.sendFile(path.join(__dirname, 'banner/banner.html'));
+})
+app.get('/Screenshot_7-4-2024_225737_192.168.0.138.jpeg', (req,res)=>{
+  reqNotifier(req)
+  res.sendFile(path.join(__dirname, 'banner/Screenshot_7-4-2024_225737_192.168.0.138.jpeg'));
+})
+app.get('/2024-Rubilnik-Banner_unfinished__9.glb', (req,res)=>{
+  reqNotifier(req)
+  res.sendFile(path.join(__dirname, 'banner/2024-Rubilnik-Banner_unfinished__9.glb'));
+})
+
 
 // Prisma DB functions
 import {
@@ -58,6 +71,8 @@ app.post('/hi', (req,res)=>{
   reqNotifier(req)
   res.status(200).send()
 })
+
+
 
 app.post('/user/verify',(req,res)=>{
   reqNotifier(req);

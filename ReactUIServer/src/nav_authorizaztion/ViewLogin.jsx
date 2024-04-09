@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { limits } from '../data.mjs';
 import { SERVER_URL } from '../main';
+import { Header } from '../nav_app/Header';
+//import banner from '../assets/banner/banner.html'
 
 
 export const ViewLogin = () => {
@@ -13,7 +15,11 @@ export const ViewLogin = () => {
     return (
         JSON.parse(localStorage.getItem('self-user'))? window.location.href='/' :
         <div className='ViewLogin'>
-            <img width='250' height='125' src="https://static1.squarespace.com/static/5e949a92e17d55230cd1d44f/t/61f35a8548933c4ce4cc0daa/1643338381475/HelloLight_Mac.png?format=1500w" alt="welcome banner" />
+            {/* <img width='250' height='125' src="https://static1.squarespace.com/static/5e949a92e17d55230cd1d44f/t/61f35a8548933c4ce4cc0daa/1643338381475/HelloLight_Mac.png?format=1500w" alt="welcome banner" /> */}
+            {/* <iframe src={banner} ></iframe> */}
+
+                <iframe src={SERVER_URL+'/banner.html'} style={{marginBottom:'2cm', width:'300px', height:'1250px'}} ></iframe>
+            
             <div className='hstack'>
                 <div className='log accent'>LOG</div>
                 <div className='in accent'>IN</div>     
