@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import ViewResult from "./ViewResult";
 import { io } from "socket.io-client";
 import { SERVER_URL } from "../main";
-import { Header } from "../nav_app/Header";
 import ViewGame from "./ViewGame";
 
 
@@ -119,9 +118,6 @@ const Play = () => {
   if (!socket || !socket.connected) return <div>failed to connect<button onClick={()=>{setCount(count+1)}}>{count}</button></div>
     
     return <div className="Play">
-
-      {/* <Header>{(gameState!=='lobby'? roomId+" " : null) + socket.id}</Header> */}
-
 
       {!joined? <div> failed to join the room. Maybe it doesn't exist </div> : null}
       {joined && gameState === 'lobby' ? <ViewLobby isHost={isHost} socket={socket} roomId={roomId}/> : null}

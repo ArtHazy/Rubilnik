@@ -5,6 +5,8 @@ export const ViewRegister = () => {
     return (
         JSON.parse(localStorage.getItem('self-user'))? window.location.href='/' :
         <div className='ViewRegister'>
+            <div className="register-block">
+                
                 <div className="hstack">
                     <div className='reg accent'>REG</div>
                     <div className='ister accent'>ISTER</div>
@@ -58,6 +60,7 @@ export const ViewRegister = () => {
                     <small>Login</small>
                 </a>
 
+            </div>
 
         </div>
     )

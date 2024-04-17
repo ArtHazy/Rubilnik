@@ -22,13 +22,29 @@
 }
 
 html,body,#root {
-  width: 100%;
-  height: 100%;
   font-family: 'Russo One', sans-serif;
   margin: 0;
   box-sizing: border-box;
-  overflow: hidden;
+  //overflow: hidden;
   background-color: var(--color-dark);
+
+  @mixin vstack {
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    justify-content: start;
+  }
+  @mixin hstack {
+    display: flex;
+    flex-direction: row;
+    justify-content: safe center;
+    align-items: center;
+  }
+
+  .login-block, .register-block {
+    @include vstack();
+    align-items: center;
+  }
 
   
 
@@ -41,13 +57,13 @@ html,body,#root {
   scrollbar-width: none;  /* Firefox */
   
   button {
-    padding: .5em;
+    padding: .1cm;
     overflow-wrap: break-word;
     overflow: hidden;
     text-overflow: ellipsis;
     font-family: inherit;
     background-color: var(--color-light);
-    fill: var(--color-dark);
+    fill: var(--color-light);
     color: var(--color-dark);
     width: fit-content;
     border-radius: .15cm;
@@ -61,12 +77,19 @@ html,body,#root {
   input, select{
     font-family: inherit;
     text-align: center;
-    background: var(--color-light);
-    color: var(--color-dark);
+    background: var(--color-not-so-dark);
+    color: var(--color-light);
     fill: var(--color-dark);
     padding: 4px !important;
     border-radius: 8px;
     box-sizing: border-box;
+  }
+  input[type='checkbox']{
+    cursor: pointer;
+    background: pink;
+  }
+  input[type='checkbox']:hover{
+    width: 1cm;
   }
 
   div,p,h1,h2,h3,h4,h5,h6 {
@@ -77,23 +100,26 @@ html,body,#root {
 
   .view {
     @extend .full-screen;
+    overflow: scroll;
     max-width: 30cm;
+    min-width: fit-content;
     font-family: inherit;
-    padding: 0.5em;
+    padding: 0.2cm;
     padding-bottom: 3cm;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
     align-items: center;
+    position: relative
   }
 
   .ViewLogin,
   .ViewRegister {
     @extend .view;
-    height: 100%;
+    padding-bottom: 0.2cm;
     margin: 0 auto;
     box-sizing: border-box;
-    justify-content: center;
+    justify-content: safe center;
     .accent{
       font-size: 2em;
     }
@@ -115,17 +141,17 @@ html,body,#root {
 
 
   .Header {
-    @extend .vstack;
-    position: sticky;
+    @include vstack();
+    // position: sticky;
+    // top: 0;
     box-sizing: border-box;
-    top: 0;
     // border-radius: 0px 0px 8px 8px;
     width: 100%;
     flex-grow: 0;
     justify-content: space-evenly;
 
     .header-content-container {
-      @extend .hstack;
+      @include hstack();
       color: white;
       fill: white;
       background: var(--color-dark);
@@ -137,12 +163,82 @@ html,body,#root {
     }
   }
 
-  .Footer {
-    @extend .vstack;
+  .controls {
+    @include hstack();
+    border: 2px solid var(--color-dark);
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 6cm;
+    min-width: fit-content;
+    padding: .15cm;
+    background: var(--color-light);
+    border-radius: 8px 8px 8px 8px;
+    justify-content: space-evenly;
+    align-items: center;
+    button {
+      @include hstack();
+      box-sizing: border-box;
+      border: 0;
+      background: var(--color-light);
+      transition: .3s;
+      width: 100%;
+      &:hover{
+        filter: brightness(85%);
+      }
+      &:active{
+        filter: brightness(50%);
+      }
+    }
+
+    &.view-actions{
+      width: fit-content;
+      position: fixed;
+      bottom: 0;
+      @media (orientation: portrait) {
+        right: 0;
+        @include vstack();
+      }
+      @media (orientation: landscape) {
+        width: 100%;
+        max-width: 6cm;
+        @include hstack()
+      }
+
+
+      margin: 2cm .5cm;
+      button{
+        box-sizing:border-box;
+      }
+    }
+    &.view-navigation {
+      position: fixed;
+      margin: .5cm;
+      bottom: 0;
+      button{
+        margin: 0 .1cm;
+        box-sizing: border-box;
+      }
+
+      button.active{
+        background: var(--color-dark);
+        fill: var(--color-light);
+        color: var(--color-light);
+        img.icon{
+          filter: invert(1);
+        }
+        scale: 1.1;
+        transition: .3s;
+        
+      }
+    }
+  }
+
+  .nAV {
+    @include vstack();
     width: fit-content;
     min-width: 6cm;
     box-sizing: border-box;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
@@ -150,78 +246,14 @@ html,body,#root {
 
     color: white;
     fill: white;
-    justify-content: space-evenly;
     align-items: center;
     align-self: center;
 
-    .buttons-container {
-      @extend .hstack;
-      border: 2px solid var(--color-dark);
-      box-sizing: border-box;
-      width: 100%;
-      max-width: 6cm;
-      padding: .15cm;
-      background: var(--color-light);
-      border-radius: 8px 8px 8px 8px;
-      justify-content: space-evenly;
-      align-items: center;
-      button {
-        @extend .hstack;
-        padding: .2em;
-        margin: 0 .2em;
-
-        box-sizing: border-box;
-        border: 0;
-        background: var(--color-light);
-        transition: .3s;
-        width: 100%;
-        &:hover{
-          filter: brightness(85%);
-        }
-        &:active{
-          filter: brightness(50%);
-        }
-      }
-      &.view-actions{
-        button{
-          box-sizing:border-box;
-        }
-      }
-      &.view-navigation {
-        button.active{
-          background: var(--color-dark);
-          fill: var(--color-light);
-          color: var(--color-light);
-          img.icon{
-            filter: invert(1);
-          }
-          scale: 1.1;
-          transition: .3s;
-          
-        }
-      }
-      
-
-    }
-  }
-
-
-  .vstack {
-    display: flex;
-    flex-direction: column;
-    height: fit-content;
-    justify-content: start;
-  }
-
-  .hstack {
-    display: flex;
-    flex-direction: row;
-    justify-content: safe center;
-    align-items: center;
-    //flex-shrink: 0;
+    
   }
 
   
+
 
 
   .picture {
@@ -249,24 +281,32 @@ html,body,#root {
   }
 
   .App {
-    @extend .full-screen, .vstack;
+    @include vstack();
+    width: 100vw;
+    height: 100vh;
     font-family: inherit;
     margin-bottom: auto;
     box-sizing: border-box;
     overflow: scroll;
     /* justify-content: center; */
     align-items: center;
+
     body{
-      @extend .hstack;
+      @include hstack();
       width: 100%;
-      overflow: scroll;
+      //overflow: scroll;
     }
     // }
+    .ViewQuestionList{
+      max-width: 20cm;
+      min-width: 8cm;
+    }
 
     .ViewQuestionList, .ViewQuestionEdit{
       .grid-questionList, .grid-choicesList{
         @extend .grid;
         width: 100%;
+        
         grid-template-columns: repeat(auto-fill, minmax(1fr,1fr));
 
         .hstack{
@@ -276,165 +316,112 @@ html,body,#root {
           height: 100%;
         }
 
-        .list-item{
-          @extend .vstack;
+
+        .question {
           width: 100%;
-          height: fit-content;
-          flex-grow: 1;
-          .question {
+          display: grid;
+          grid-template-columns: 1.5cm 1fr 1.5cm;
+          align-items: center;
+          justify-items: center;
+
+          .index{
+            color: var(--color-dark);
+            z-index: 1;
+            grid-row: 1 / 2;
+            grid-column: 1 / 2;
+          }
+        }
+        .choices{
+          width: 100%;
+          box-sizing: border-box;
+          height: 8cm;
+          overflow: scroll;
+          padding: .5cm;
+          border-radius: .2cm;
+          background: var(--color-not-so-dark);
+          transition: .5s;
+          .choice{
             display: grid;
-            grid-template-columns: 1cm 1fr 1cm;
             align-items: center;
             justify-items: center;
+            width: 100%;
+            transition: .3s;
+            height: 1cm;
+            overflow: hidden;
 
-            .b-question{
-              position: relative;
-              grid-row: 1 / 1;
-              grid-column: 1 / 4;
+            input[type='checkbox']{
               width: 100%;
+              height: 100%;
             }
-            .index{
-              z-index: 1;
-              color: #242424;
-              grid-row: 1 / 2;
-              grid-column: 1 / 2;
-            }
-
-            .dropdown{
-              z-index: 1;
-              color: #242424;
-              grid-row: 1 / 2;
-              grid-column: 3 / 4;
-              cursor: pointer;
-              position: relative;
-
-              .content{
-                @extend .vstack;
-                display: none;
-                position: absolute;
-                left: -1cm;
+            
+            grid-template-columns: 1.5cm 3fr 1.5cm;
+            .choice-text{
+              @include hstack();
+              height: fit-content;
+              transition: .3s;
+              &.correct{
+                background-color: var(--color-acc1);
+                transition: .3s;
               }
-              &:hover .content{
-                display: flex;
-              }
-            }
-
-            // .b-delete{
-            //   @media (hover:hover){
-            //     display: none;
-            //   }
-            // }
-            // &:hover .b-delete{
-            //   display: block;
-            // }
-          }
-          .choices{
-            padding: .5cm;
-            border-radius: .2cm;
-            background: var(--color-not-so-dark);
-            .choice-grid{
-              display: grid;
-              align-items: center;
-              justify-items: center;
-              width: 100%;
-
-              grid-template-columns: 1cm 3fr 1cm;
-              .choice{
-                @extend .hstack;
-                height: fit-content;
-              }
-            }
-            &.hidden{
-              display: none;
             }
           }
+          &.hidden{
+            transition: .5s;
+            //display: none;
+            height: 0cm;
+            padding: 0;
+            overflow: hidden
+          }
+        }
 
           
-        }
+        
 
 
       }
     }
     .ViewQuestionEdit{
-      @extend .vstack;
+      @include vstack();
       align-items: center;
-
-      .choice{
-        flex-grow: 1;
-        &.correct{
-          background: var(--color-acc1)
-        }
-      }
     }
 
-
-
-    .ViewLibrary .controls-dropdown{
-      position: absolute;
-      right: .5cm;
-      bottom: .5cm;
-    }
-    // .ViewQuestionList .controls-dropdown{
-    //   position: relative;
-    // }
-
-    .ViewLibrary {
-      .controls-dropdown{
-        cursor: pointer;
-        color: var(--color-dark);
-        padding: .2cm;
-        z-index: 3;
-        .content{
-          @extend .vstack;
-          padding: .2cm;
-          border-radius: .1cm;
-          color: var(--color-dark);
-          position: absolute;
-          left: -1cm;
-          display: none;
-          z-index: 2;
-        }
+    .dropdown{
+      position: relative;
+      cursor: pointer;
+      .content{
+        @include vstack();
+        display: none;
+        position: absolute;
+        right: 0;
       }
-      .controls-dropdown:hover .content{
+      &:hover .content{
         display: flex;
-      }
-      .controls{
-        @extend .vstack;
-
-        @media (hover:hover){
-          display:none;
-        }
       }
     }
 
     .ViewLibrary {
       @extend .view;
-      @extend .vstack;
+      @include vstack();
       align-items: center;
+
+      .dropdown{
+        position: absolute;
+        right: .5cm;
+        bottom: .5cm;
+        color: var(--color-dark);
+        padding: .2cm;
+      }
 
       .grid-tile-container {
         @extend .grid;
-
-        //grid-template-columns: repeat(auto-fit, minmax(6cm, 1fr));
         grid-template-columns: repeat(auto-fill, minmax(6cm, 1fr));
 
-        
         .tile{
-          @extend .hstack;
+          @include hstack();
           height: 3cm;
           position: relative;
           .quiz-button{
             height: 100%;
-          }
-        }
-
-
-        .tile:hover .controls{
-          display: flex;
-          height: 100%;
-          button{
-            flex-grow: 1;
-            width: 100%;
           }
         }
       }
@@ -456,7 +443,8 @@ html,body,#root {
   
   
   .Play {
-    @extend .full-screen, .vstack;
+    @extend .full-screen;
+    @include vstack();
     font-family: inherit;
     margin-bottom: auto;
     box-sizing: border-box;
@@ -534,31 +522,32 @@ html,body,#root {
       width:100%;
       height:80%;
       &.vertical{
-        @extend .vstack;
+        @include vstack();
         justify-content: center;
         height:80%;
       }
       &.horizontal{
-        @extend .hstack;
+        @include hstack();
       }
     }
 
     .game_geometry {
+      @include vstack();
       .dynamic-font{
         font-size: max( 1.5em, min(2.5vw, 3em)) ;
       }
       width: 100%;
       height: 100%;
-      @extend .vstack;
       justify-content: center;
       border-radius: 5px;
       position: relative;
       .head{
-        @extend .hstack;
+        @include hstack();
         width: 100%;
         height: 20%;
         .question_title {
           @extend .dynamic-font;
+          @include vstack();
           overflow: scroll;
           word-break:keep-all;
           flex-grow: 1;
@@ -566,7 +555,6 @@ html,body,#root {
           color: var(--color-light);
           vertical-align: start;
           text-align: start;
-          @extend .vstack;
           height: 100%;
           justify-content: center;
           line-height: 1em;
@@ -584,7 +572,7 @@ html,body,#root {
       }
 
       .body{
-        @extend .vstack;
+        @include vstack();
         height: 80%;
         justify-content: center;
         .question {
@@ -661,7 +649,7 @@ html,body,#root {
       }
       
       .action-buttons {
-        @extend .hstack;
+        @include hstack();
         justify-content: end;
         padding: .5cm;
         button{

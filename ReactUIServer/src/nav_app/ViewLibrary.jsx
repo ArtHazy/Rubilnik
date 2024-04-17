@@ -2,10 +2,10 @@ import { alert_limit, limits, quiz_gl, local_store_user, user } from '../data.mj
 import { useState, useLayoutEffect } from 'react';
 import { Quiz } from '../classes.mjs';
 import React from 'react';
-import { Footer } from './Footer';
+import { ViewActions } from './Controls';
 import add_svg from '../assets/add.svg'
 import delete_svg from '../assets/delete.svg'
-import { ViewQuestionList } from './ViewQuestionList';
+import { ViewEditQuiz } from './ViewEditQuiz';
 import { useNavigate } from 'react-router-dom';
 import { callView } from "./App";
 
@@ -36,14 +36,14 @@ export const ViewLibrary = ({set_view}) => {
                     return (
                         <div className='tile' style={{width:'100%'}}>
                             <button className='quiz-button'  onClick={()=>{
-                                set_view(callView(()=>ViewQuestionList( {set_view, quiz, quizInd: index} ), `Edit quiz: ${quiz.title} `) )
+                                set_view(callView(()=>ViewEditQuiz( {set_view, quiz, quizInd: index} ), `Edit quiz`) )
                             }} style={{flexGrow:1}}> {quiz.title}
 
                                 
 
                             </button>
 
-                            <div className="controls-dropdown">
+                            <div className="dropdown">
                                 ...
                                 <div className="content">
                                     <button className='b-delete'  onClick={()=>{
@@ -61,17 +61,17 @@ export const ViewLibrary = ({set_view}) => {
                 })}
 
             </div>
-            <Footer bottom='3em'>
-                <div className='buttons-container view-actions'>
-                    <button onClick={() => {
-                        !user.quizzes ? user.quizzes = [] : null
-                        user.quizzes.length < limits.maxQuizes ? user.quizzes.push(new Quiz('new', [])) : alert_limit()
-                        update()
-                    }}>
-                        <img className='icon' src={add_svg} alt="add icon" />
-                    </button>
-                </div>
-            </Footer>
+
+            <ViewActions>
+                <button onClick={() => {
+                    !user.quizzes ? user.quizzes = [] : null
+                    user.quizzes.length < limits.maxQuizes ? user.quizzes.push(new Quiz('new', [])) : alert_limit()
+                    update()
+                }}>
+                    <img className='icon' src={add_svg} alt="add icon" />
+                </button>
+            </ViewActions>
+
         </div>
     );
 };

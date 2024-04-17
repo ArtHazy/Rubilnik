@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Footer, ViewNavigation } from "./Footer";
-import { Header } from "./Header";
+import { ViewNavigation } from "./Controls";
 import { ViewProfile } from "./ViewProfile";
 import { user } from "../data.mjs";
 import { useNavigate } from "react-router-dom";
@@ -22,19 +21,20 @@ function App() {
     let navigate = useNavigate()
     return (
       <div className={"App"}>
-        <Header>
-          <div style={{fontSize: '1.2em'}}>
-            {view.name}
+
+        <div className="Header">
+          <div className='header-content-container'>
+            <div style={{fontSize: '1.2em'}}>
+              {view.name}
+            </div>
           </div>
-        </Header>
+        </div>
 
-        <body>
-          {view.jsxElement()}
-        </body>
+        {view.jsxElement()}
 
-        <Footer>
-          <ViewNavigation view={view} set_view={set_view}></ViewNavigation>
-        </Footer>
+        <ViewNavigation view={view} set_view={set_view} />
+
+        
       </div>
     );
   } else {
