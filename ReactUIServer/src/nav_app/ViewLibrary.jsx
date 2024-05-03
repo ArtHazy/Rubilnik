@@ -32,11 +32,14 @@ export const ViewLibrary = ({set_view}) => {
         <div className='ViewLibrary'>
             <div className='grid-tile-container'>
 
-                {user.quizzes?.map((quiz, index) => {
+                {user.quizzes?.map((quiz, qInd) => {
                     return (
                         <div className='tile' style={{width:'100%'}}>
                             <button className='quiz-button'  onClick={()=>{
-                                set_view(callView(()=>ViewEditQuiz( {set_view, quiz, quizInd: index} ), `Edit quiz`) )
+                                console.log(quiz);
+                                navigate('/edit-quiz', {state: {quiz, qInd}})
+
+                                // set_view(callView(()=>ViewEditQuiz( {set_view, quiz, quizInd: qInd} ), `Edit quiz`) )
                             }} style={{flexGrow:1}}> {quiz.title}
 
                                 
@@ -47,7 +50,7 @@ export const ViewLibrary = ({set_view}) => {
                                 ...
                                 <div className="content">
                                     <button className='b-delete'  onClick={()=>{
-                                        user.quizzes.splice(index, 1);
+                                        user.quizzes.splice(qInd, 1);
                                         update()
                                     }}>
                                         delete

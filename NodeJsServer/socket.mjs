@@ -1,6 +1,7 @@
 import { Server } from 'socket.io';
 
 export function initSocket(server){
+    console.log('initSocket');
     
     const io = new Server(server, {cors: {origin: "*"}});
     io.on('connection', (socket) => {
@@ -12,7 +13,6 @@ export function initSocket(server){
         }
         
         /**
-         * 
          * @param {string} roomId 
          * @returns {{}} roommates {userId?:string : {name?:string}, ...}
          */

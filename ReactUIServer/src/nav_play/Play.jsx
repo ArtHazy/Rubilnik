@@ -91,8 +91,6 @@ const Play = () => {
       delete guest.id 
       localStorage.setItem('self-guest', JSON.stringify(guest))
     }) : null
-    
-
 
     // map player's choices for later evaluation
     isHost? 
@@ -115,7 +113,11 @@ const Play = () => {
   
 
   console.log(socket);
-  if (!socket || !socket.connected) return <div>failed to connect<button onClick={()=>{setCount(count+1)}}>{count}</button></div>
+  if (!socket || !socket.connected) 
+  return <div>
+    failed to connect
+    <button onClick={()=>{window.location.reload()}}>retry</button>
+  </div>
     
     return <div className="Play">
 

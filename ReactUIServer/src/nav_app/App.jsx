@@ -3,6 +3,7 @@ import { ViewNavigation } from "./Controls";
 import { ViewProfile } from "./ViewProfile";
 import { user } from "../data.mjs";
 import { useNavigate } from "react-router-dom";
+import { ViewLibrary } from "./ViewLibrary";
 
 
 
@@ -17,7 +18,7 @@ export function callView(jsxElement, name){
 
 function App() {
   if (user){
-    const [view, set_view] = useState(callView(()=>ViewProfile({}),'Profile'))
+    const [view, set_view] = useState(callView(()=>ViewLibrary({}),'Library'))
     let navigate = useNavigate()
     return (
       <div className={"App"}>

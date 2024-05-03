@@ -22,6 +22,9 @@ import {
   doesJsonHave, handleMissingProperties, reqNotifier, logJson,
 } from "./tools.mjs"
 
+app.get('/doc', (req, res) => {
+  res.sendFile(path.join(__dirname,'documentation.html'))
+})
 
 // test
 app.get('/getTest.html', (req, res) => {

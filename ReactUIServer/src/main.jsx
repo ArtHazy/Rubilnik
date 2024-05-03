@@ -10,9 +10,10 @@ import Play from './nav_play/Play.jsx';
 import { ViewLogin } from './nav_authorizaztion/ViewLogin.jsx';
 import { ViewRegister } from './nav_authorizaztion/ViewRegister.jsx';
 import { ViewJoin } from './nav_app/ViewJoin.jsx';
+import { ViewEditQuiz } from './nav_app/ViewEditQuiz.jsx';
 
 
-export const SERVER_URL = "http://192.168.0.138:3000"
+export const SERVER_URL = "http://192.168.0.7:3000"
 /**
  * @param {()=>React.JSX.Element} jsxElement 
  * @param {string} name 
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+  },
+  {
+    path: "/edit-quiz",
+    element: <ViewEditQuiz/>,
   },
   {
     path: "/play/:roomId",
