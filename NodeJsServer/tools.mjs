@@ -33,5 +33,5 @@ export function logJson(json) {
       console.log(']');
     } else {
       console.log(JSON.stringify(json));
-    }  
+    }
 }

@@ -22,17 +22,10 @@ import {
   doesJsonHave, handleMissingProperties, reqNotifier, logJson,
 } from "./tools.mjs"
 
-app.get('/doc', (req, res) => {
+app.get('/documentation', (req, res) => {
   res.sendFile(path.join(__dirname,'documentation.html'))
 })
-
-// test
-app.get('/getTest.html', (req, res) => {
-  reqNotifier(req)
-  res.sendFile(path.join(__dirname, 'getTest.html'));
-});
-
-app.get('/banner.html', (req,res)=>{
+app.get('/banner', (req,res)=>{
   reqNotifier(req)
   res.sendFile(path.join(__dirname, 'banner/banner.html'));
 })
@@ -68,13 +61,6 @@ async function clearDB(){
 // At Start
 // clearDB()
 var userIds = new IdTree(4)
-
-
-app.post('/hi', (req,res)=>{
-  reqNotifier(req)
-  res.status(200).send()
-})
-
 
 
 app.post('/user/verify',(req,res)=>{
@@ -138,7 +124,7 @@ app.delete('/user',(req,res)=>{
     })
   }
 })
-app.post('/usersQuizzes',(req,res)=>{
+app.post('/user/quizzes',(req,res)=>{
   reqNotifier(req);
   if (doesJsonHave(req.body,handleMissingProperties,'userId','quizzes')){
     updateUsersQuizzes(req.body.userId,req.body.quizzes).then(result=>{

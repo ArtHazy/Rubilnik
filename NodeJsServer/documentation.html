@@ -9,6 +9,156 @@
     <h1 style="width: 100%; text-align: center;">RUBILNIK DOCUMENTATION</h1>
     <h2 style="width: 100%; text-align: center;">Structure</h2>
     <h2 style="width: 100%; text-align: center;">API</h2>
+    <style>
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            text-align: center;
+        }
+    </style>
+    <h3 style="text-align: center;">server:3000</h3>
+    <table>
+        <tr>
+            <th>Method</th>
+            <th>URL</th>
+            <th>Description</th>
+            <th>Request</th>
+            <th>Responce</th>
+        </tr>
+        <tr>
+            <td>GET </td>
+            <td>/doc</td>
+            <td>Документация проекта</td>
+            <td></td>
+            <td>.html</td>
+        </tr>
+        <tr>
+            <td>GET </td>
+            <td>/banner</td>
+            <td>Баннер проекта</td>
+            <td></td>
+            <td>.html</td>
+        </tr>
+        <tr>
+            <td>GET </td>
+            <td>/Screenshot_7-4-2024_225737_192.168.0.138.jpeg</td>
+            <td>файл для баннера</td>
+            <td></td>
+            <td>.jpeg</td>
+        </tr>
+        <tr>
+            <td>GET </td>
+            <td>/2024-Rubilnik-Banner_unfinished__9.glb</td>
+            <td>3D сцена для баннера</td>
+            <td></td>
+            <td>.glb</td>
+        </tr>
+
+
+        <tr>
+            <td>POST </td>
+            <td>/user</td>
+            <td>Создает пользователя в БД</td>
+            <td>{email, password}</td>
+            <td>(200|400|500) {msg}</td>
+        </tr>
+        <tr>
+            <td>PUT </td>
+            <td>/user</td>
+            <td>Обновляет пользователя в БД</td>
+            <td>{email}</td>
+            <td>(200|400|500) {msg}</td>
+        </tr>
+        <tr>
+            <td>DELETE </td>
+            <td>/user</td>
+            <td>удаляет пользователя в БД</td>
+            <td>{id}</td>
+            <td>(200|400|500) {msg}</td>
+        </tr>
+        <tr>
+            <td>POST </td>
+            <td>/user/verify</td>
+            <td>Проверка регистрации</td>
+            <td>{email, password}</td>
+            <td>(200|400|500) {msg}</td>
+        </tr>
+        <tr>
+            <td>POST </td>
+            <td>/user/quizzes</td>
+            <td>Обновление викторин, созданных пользователем</td>
+            <td>{userId, quizzes}</td>
+            <td>(200|400|500) {msg}</td>
+        </tr>
+        
+    </table>
+    <h3 style="text-align: center;">Socket server</h3>
+    <table>
+        <tr>
+            <th>Event</th>
+            <th>Description</th>
+            <th>Request</th>
+            <th>Responce</th>
+        </tr>
+        <tr>
+            <td>join</td>
+            <td> Присоединиться к комнате <u>roomId</u> пользователю <u>userName</u> <u>userId</u></td>
+            <td>{roomId, userName, userId}</td>
+            <td>'join' {userName, userId, roommates} -> всем в комнате<br>'joined' {roommates} -> присоединявшемуся пользователю</td>
+        </tr>
+        <tr>
+            <td>bark</td>
+            <td>Отправить от пользователя <u>userId</u> <u>userName</u> уведомление всем во всех комнатах где находится текущий сокет</td>
+            <td>{userName, guestName}</td>
+            <td>'bark' {} -> всем в комнате</td>
+        </tr>
+        <tr>
+            <td>create</td>
+            <td>Создать и добавить хоста <u>userName</u> <u>userId</u> в комнату <u>roomId</u></td>
+            <td>{roomId, userName, userId}</td>
+            <td>'create' {} -> хосту<br>'joined' -> хосту </td>
+        </tr>
+        <tr>
+            <td>start</td>
+            <td> Начать викторину в комнате <u>roomId</u></td>
+            <td> {roomId} </td>
+            <td>'start' {} -> всем в  комнате</td>
+        </tr>
+        <tr>
+            <td>choice</td>
+            <td> Отправить в комнату <u>roomId</u> выбор ответа на вопрос <u>questionInd</u> текущей викторины от игрока <u>userId</u> <u>userName</u> </td>
+            <td> {roomId, userId, userName, questionInd, choices} </td>
+            <td>'choice' {userId, userName, questionInd, choices} -> всем в комнате</td>
+        </tr>
+        <tr>
+            <td>reveal</td>
+            <td> Раскрыть правильный ответ по индексу <u>correctChoicesInd</u> игрокам в комнате <u>roomId</u> на текущий вопрос </td>
+            <td> {roomId, correctChoicesInd} </td>
+            <td>'reveal' {correctChoicesInd} -> всем в комнате</td>
+        </tr>
+        <tr>
+            <td>next</td>
+            <td> Пользователям комнаты <u>roomId</u> перейти к след. вопросу <u>questionInd</u> <u>question</u> </td>
+            <td> {roomId, questionInd, question} </td>
+            <td>'next' {question, questionInd} -> всем в комнате</td>
+        </tr>
+        <tr>
+            <td>end</td>
+            <td> Завершить викторину в комнате <u>roomId</u> </td>
+            <td> {roomId} </td>
+            <td>'end' {} -> всем в комнате</td>
+        </tr>
+        <tr>
+            <td>scores</td>
+            <td> Отобразить у всех пользователей в комнате <u>roomId</u> таблицу лидеров <u>usersScores</u> </td>
+            <td> {roomId, usersScores} </td>
+            <td>'scores' {usersScores} -> всем в комнате</td>
+        </tr>
+        
+    </table>
 
 </body>
 </html>

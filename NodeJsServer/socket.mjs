@@ -32,33 +32,7 @@ export function initSocket(server){
         console.log(`socket connect recieved: ${socket.id}`);
         logRooms()
         
-        socket.on('bark', ({userName,guestName}) => {
-            socket.rooms.forEach((room) => {
-                io.to(room).emit('bark',{msg:   `user ${userName} barked in room ${room}`})
-            });
-        })
-      
-        socket.on('join', ({roomId, userName, userId}) => {
-            console.log(`join received from user ${userId} ${userName} to room: ${roomId}`);
-            socket.data = {userId, userName};
         
-            if (io.sockets.adapter.rooms.has(roomId)){
-        
-                socket.join(roomId)
-                let roommates = getRoommates(roomId)
-        
-                console.log('roommates', roommates );
-                console.log(socket.rooms);
-        
-                io.to(roomId).emit('join',{userName, userId, roommates})
-                socket.emit('joined',{roommates})
-        
-            } else {
-                console.log(`${userName} failed to join. Room ${roomId} does not exist`);
-                //socket.emit('joined',{})
-            }
-            logRooms()
-        });
       
         socket.on('create', ({roomId, userName, userId}) => {
             console.log(`create received for room ${roomId}`);
