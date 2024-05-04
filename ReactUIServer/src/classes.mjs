@@ -1,3 +1,5 @@
+import { limits } from "./data.mjs";
+
 export class User {
     id;
     /**
@@ -24,6 +26,10 @@ export class Choice {
         this.text = text;
         this.isCorrect = isCorrect;
     }
+    loadData(obj){
+        if (obj.text && (typeof obj.text == "string") && obj.text.length<=limits.maxTextLength) {this.text = obj.text}
+        if (obj.isCorrect && (typeof obj.isCorrect == "boolean")) {this.isCorrect = obj.isCorrect}
+    }
 }
 export class Question {
     /**
@@ -34,6 +40,16 @@ export class Question {
         this.choices = choices;
         this.text = text;
     }
+    loadData(obj){
+        if (obj.text && (typeof obj.text == "string") && obj.text.length<=limits.maxTextLength){this.text = obj.text}
+        if (obj.choices && (Array.isArray(obj.choices) && obj.choices.length<=limits.maxChoices)){
+            this.choices = obj.choices.map((choice)=>{
+                let c = new Choice()
+                c.loadData(choice)
+                return c
+            })
+        }
+    }
 }
 export class Quiz {
     /**
@@ -43,5 +59,15 @@ export class Quiz {
     constructor(title,questions) {
         this.questions = questions;
         this.title = title
+    }
+    loadData(obj){
+        if (obj.title && (typeof obj.title == 'string') && obj.title.length<=limits.maxTextLength) {this.title = obj.title}
+        if (obj.questions && (Array.isArray(obj.questions)) && obj.questions.length<=limits.maxQuestions){
+            this.questions = obj.questions.map((question)=>{
+                let q = new Question()
+                q.loadData(question)
+                return q
+            })
+        }
     }
 }

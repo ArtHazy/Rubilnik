@@ -5,7 +5,8 @@
   --color-acc-faded: rgba(150, 180, 240, 0.8);
   //--color-bg: rgb(41, 43, 61);
   --color-dark: #242424;
-  --color-not-so-dark: #464646;
+  --color-gray1: #464646;
+  --color-gray2: #6b6b6b;
   --color-light: #D9D9D9;
 
   --color-bg2: rgba(50, 60, 80);
@@ -16,6 +17,7 @@
   --color-acc3: rgb(184, 59, 94);
   --color-acc4: rgb(217, 217, 217);
 
+  --color-gold: #e8af4b;
   --color-split1: #0FD4CD;
   --color-split2: rgb(214, 191, 129);
 
@@ -36,6 +38,13 @@ html,body,#root {
   //overflow: hidden;
   background-color: var(--color-dark);
 
+  // parent must be positioned relatively (not initial)
+  @mixin center-with-margin{ 
+    position: relative;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+  }
   @mixin vstack {
     display: flex;
     flex-direction: column;
@@ -90,7 +99,6 @@ html,body,#root {
     color: var(--color-dark);
     width: fit-content;
     border-radius: .15cm;
-    
     cursor: pointer;
 
     div,p,h1,h2,h3,h4,h5,h6 {
@@ -98,9 +106,10 @@ html,body,#root {
     }
   }
   input, select{
+    @include max-width-30-cm();
     font-family: inherit;
     text-align: center;
-    background: var(--color-not-so-dark);
+    background: var(--color-gray1);
     color: var(--color-light);
     fill: var(--color-dark);
     padding: 4px !important;
@@ -124,8 +133,8 @@ html,body,#root {
   .ViewLogin,
   .ViewRegister {
     @include view();
+    @include center-with-margin();
     padding-bottom: 0.2cm;
-    margin: 0 auto;
     box-sizing: border-box;
     justify-content: safe center;
     .accent{
@@ -243,15 +252,12 @@ html,body,#root {
 
   .nAV {
     @include vstack();
+    @include center-with-margin();
     width: fit-content;
     min-width: 6cm;
     box-sizing: border-box;
     position: fixed;
     bottom: 0;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-
     color: white;
     fill: white;
     align-items: center;
@@ -281,6 +287,12 @@ html,body,#root {
   .ViewQuestionList{
     @include view();
   }
+  .ViewQuestionEdit{
+    position: relative;
+    button.add-question {
+      @include center-with-margin();
+    }
+  }
   .ViewQuestionList, .ViewQuestionEdit{
     .grid-questionList, .grid-choicesList{
       @include grid();
@@ -290,9 +302,6 @@ html,body,#root {
       grid-template-columns: repeat(auto-fill, minmax(1fr,1fr));
       .hstack{
         width: 100%
-      }
-      button{
-        height: 100%;
       }
 
       .question {
@@ -310,13 +319,14 @@ html,body,#root {
         }
       }
       .choices{
+        position: relative;
         width: 100%;
         box-sizing: border-box;
         height: 8cm;
         overflow: scroll;
         padding: .5cm;
         border-radius: .2cm;
-        background: var(--color-not-so-dark);
+        background: var(--color-gray2);
         transition: .5s;
         .choice{
           display: grid;
@@ -335,6 +345,7 @@ html,body,#root {
           grid-template-columns: 1.5cm 3fr 1.5cm;
           .choice-text{
             @include hstack();
+            width: 100%;
             height: fit-content;
             transition: .3s;
             &.correct{
@@ -351,11 +362,6 @@ html,body,#root {
           overflow: hidden
         }
       }
-
-        
-      
-
-
     }
   }
 
@@ -429,9 +435,9 @@ html,body,#root {
   }
   
   .Play {
-    width: 100%;
-    height: 100%;
     @include vstack();
+    width: 100vw;
+    height: 100vh;
     font-family: inherit;
     margin-bottom: auto;
     box-sizing: border-box;
@@ -487,11 +493,9 @@ html,body,#root {
       }
     }
     .connected-counter{
+      @include center-with-margin();
       box-sizing: border-box;
       padding: .1cm;
-      left:0;
-      right:0;
-      margin: 0 auto;
     }
 
     .display-connected{
@@ -520,7 +524,7 @@ html,body,#root {
 
     .game_geometry {
       @include vstack();
-      .dynamic-font{
+      @mixin dynamic-font{
         font-size: max( 1.5em, min(2.5vw, 3em)) ;
       }
       width: 100%;
@@ -533,7 +537,7 @@ html,body,#root {
         width: 100%;
         height: 20%;
         .question_title {
-          @extend .dynamic-font;
+          @include dynamic-font();
           @include vstack();
           overflow: scroll;
           word-break:keep-all;
@@ -549,7 +553,7 @@ html,body,#root {
           
         }
         .question_numbers{
-          @extend .dynamic-font;
+          @include dynamic-font();
           align-self: flex-end;
           padding: .2cm;
           line-height: 1em;
@@ -580,7 +584,7 @@ html,body,#root {
           padding: 15px;
         }
         .answer {
-          @extend .dynamic-font;
+          @include dynamic-font();
           word-break: break-all;
           overflow: scroll;
           padding: .5cm;
@@ -608,7 +612,7 @@ html,body,#root {
           @include grid();
           grid-template-columns: 2cm 1fr 2cm;
           max-width: 16cm;
-          .tile{
+          @mixin tile{
             box-sizing: border-box;
             color: var(--color-dark);
             background-color: #B0B0B0;
@@ -621,16 +625,16 @@ html,body,#root {
             align-items: center;
           }
           .index {
-            @extend .tile;
+            @include tile();
           }
           .name {
-            @extend .tile;
+            @include tile();
           }
           .score {
-            @extend .tile;
+            @include tile();
           }
           .first{
-            background-color: #e8af4b;
+            background-color: var(--color-gold);
           }
         }
       }
@@ -665,7 +669,7 @@ html,body,#root {
     }
     
     .start_button{
-      margin: 0 auto;
+      @include center-with-margin();
       margin-top: 1cm;
     }
     

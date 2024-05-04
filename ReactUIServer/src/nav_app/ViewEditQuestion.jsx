@@ -26,7 +26,7 @@ export const ViewEditQuestion = ({set_view, question, quiz}) => {
                 update()
             }} style={{width:'100%'}} />
 
-            <h4>Choices</h4>
+            <h4 style={{textAlign:'center'}}>Choices</h4>
             {question.choices.map((choice, index) => 
                 <div className="choice">
                     <input id={`checkbox ${index}`} type="checkbox" style={{width:'1.3em', flexShrink:0}} name={'correct-selection'} checked={choice.isCorrect} onClick={() => {
@@ -49,15 +49,15 @@ export const ViewEditQuestion = ({set_view, question, quiz}) => {
                 </div>
             )}
 
-                {question.choices.length < limits.maxChoices? 
-                    <button onClick={() => {
-                        question.choices.length < limits.maxChoices ? question.choices.push(new Choice('new', false)) : alert_limit()
-                        update()
-                    }}>
-                        <img src={addSvg} alt='add' className='icon' />
-                    </button>
-                    :null
-                }
+            {question.choices.length < limits.maxChoices? 
+                <button onClick={() => {
+                    question.choices.length < limits.maxChoices ? question.choices.push(new Choice('new', false)) : alert_limit()
+                    update()
+                }} className='add-question'>
+                    <img src={addSvg} alt='add' className='icon' />
+                </button>
+                :null
+            }
                 
         </div>
     );

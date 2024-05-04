@@ -6,10 +6,9 @@ import add_svg from  "../assets/add.svg"
 import back_svg from "../assets/back.svg"
 import { ViewActions } from "./Controls"
 import { local_store_user, user } from "../data.mjs"
-import { useLocation, useNavigate } from "react-router-dom"
-import { callView } from "./App";
-import { ViewLibrary } from "./ViewLibrary"
+import { json, useLocation, useNavigate } from "react-router-dom"
 import { Denied } from "../Denied"
+import { downloadObj } from "../load"
 
 
 /**
@@ -28,6 +27,9 @@ export const ViewEditQuiz = ({set_view,quiz,quizInd})=>{
         let navigate = useNavigate()
 
         function update() {
+            console.log('qqq',user.quizzes[quizInd]);
+            user.quizzes[quizInd] = quiz
+            console.log('qqq1',user.quizzes[quizInd]);
             local_store_user(user)
             set_flag(!flag)
         }
@@ -69,6 +71,36 @@ export const ViewEditQuiz = ({set_view,quiz,quizInd})=>{
                     <button onClick={()=>{ // start host
                         navigate(`/play/${user.id}`, {state: {quiz, ind: quizInd}})
                     }}><img src={play_svg} className="icon"/></button>
+                    <button onClick={()=>{
+                        downloadObj(quiz)
+                    }}>
+                        .json
+                    </button>
+                    <input type="file" onChange={(e)=>{
+                        let input = e.target;
+                        alert('file changed')
+                        let fr = new FileReader();
+                        fr.readAsText(e.target.files[0])
+                        fr.onload = (e) => {
+                            let ft = e.target.result
+                            try {
+                                console.log(ft);
+                                let json = JSON.parse(ft);
+                                console.log('loaded json',json);
+                                let q = new Quiz();
+                                q.loadData(json)
+                                quiz = q;
+                                console.log('formed quiz',quiz);
+                                input.value = null
+                                update()
+                            } catch (e) {
+                                alert('invalid json');
+                            }
+                            
+                        }
+                        
+                    }}>
+                    </input>
                 </ViewActions>
             </div>
         )
