@@ -96,6 +96,12 @@
         
     </table>
     <h3 style="text-align: center;">Socket server</h3>
+    roommates: {<u>userId</u>:<u>userName</u>, ...} <br>
+    choices: [<u>choiceIndex</u>, ...] <br>
+    correctChoicesInd: [ <u>choiceIndex</u>, ... ] <br>
+    question: {text, choices} <br>
+    choices: [{text, isCorrect}, ...] <br>
+    usersScores: [{userId, userScore}]
     <table>
         <tr>
             <th>Event</th>
@@ -156,6 +162,12 @@
             <td> Отобразить у всех пользователей в комнате <u>roomId</u> таблицу лидеров <u>usersScores</u> </td>
             <td> {roomId, usersScores} </td>
             <td>'scores' {usersScores} -> всем в комнате</td>
+        </tr>
+        <tr>
+            <td>disconnecting</td>
+            <td> Уведомить соседей по комнате об уходе и отключить сокет от комнат  </td>
+            <td> </td>
+            <td>'leave' {userId, userName, socketId} -> всем в комнате</td>
         </tr>
         
     </table>
