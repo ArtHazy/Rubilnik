@@ -60,7 +60,6 @@ const Play = () => {
     });
   
     socket.on('leave', ({userName, userId, socketId, roommates})=>{
-      alert(userId|socketId +" "+userName+' left')
       setRoommates(roommates)
     });
   

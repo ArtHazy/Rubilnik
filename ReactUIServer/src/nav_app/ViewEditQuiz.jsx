@@ -74,9 +74,12 @@ export const ViewEditQuiz = ({set_view,quiz,quizInd})=>{
                     <button onClick={()=>{
                         downloadObj(quiz)
                     }}>
-                        .json
+                        download
                     </button>
-                    <input type="file" onChange={(e)=>{
+                    <label htmlFor="file-input">
+                        upload
+                    </label>
+                    <input style={{display:"none"}} id="file-input" type="file" onChange={(e)=>{
                         let input = e.target;
                         alert('file changed')
                         let fr = new FileReader();
