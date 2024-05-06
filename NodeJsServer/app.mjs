@@ -12,7 +12,6 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 app.use(express.json());
 app.use(cors());
 
-
 server.listen(3000, () => {
   console.log('Server listening on http://localhost:3000');
 });
@@ -61,6 +60,8 @@ async function clearDB(){
 // At Start
 // clearDB()
 var userIds = new IdTree(4)
+
+initSocket(server,app)
 
 
 app.post('/user/verify',(req,res)=>{
@@ -137,4 +138,3 @@ app.post('/user/verify',(req,res)=>{
   reqNotifier(req)
 })
 
-initSocket(server)

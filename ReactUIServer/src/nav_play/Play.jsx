@@ -79,9 +79,12 @@ const Play = () => {
     socket.on('next',()=>{
       setGameState('in progress')
     })
-    socket.on('joined',({roommates})=>{
-      guest? guest.id = socket.id : null
+    socket.on('joined',({roommates, guestId})=>{
+      console.log('guestId', guestId);
+      guest? guest.id = guestId : null
+      console.log(guest);
       localStorage.setItem('self-guest', JSON.stringify(guest))
+      console.log(localStorage.getItem('self-guest'));
       //alert('joined')
       setRoommates(roommates)
       setJoined(true)

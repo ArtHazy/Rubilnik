@@ -136,7 +136,6 @@ html,body,#root {
     @include center-with-margin();
     padding-bottom: 0.2cm;
     box-sizing: border-box;
-    justify-content: safe center;
     .accent{
       font-size: 2em;
     }
@@ -423,15 +422,14 @@ html,body,#root {
         }
       }
     }
-    .ViewProfile, .ViewJoin{
-      @include view();
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      justify-self: center
-    }
-    
+  }
+  .ViewProfile, .ViewJoin{
+    @include view();
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-self: center
   }
   
   .Play {
@@ -604,8 +602,10 @@ html,body,#root {
 
       .user-scores{
         @include grid();
+        min-width: 8cm;
         //grid-template-columns: repeat(auto-fit, minmax(5cm,1fr));
         grid-template-columns: 1fr;
+        align-self: center;
         column-gap: 2cm;
         //margin: .5em;
         .user-score{
