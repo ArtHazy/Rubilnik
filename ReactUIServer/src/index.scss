@@ -302,6 +302,7 @@ html,body,#root {
     position: relative;
     button.add-question {
       @include center-with-margin();
+      position: absolute;
     }
   }
   .ViewQuestionList, .ViewQuestionEdit{
@@ -503,7 +504,8 @@ html,body,#root {
       }
     }
     .connected-counter{
-      @include center-with-margin();
+      width: 100%;
+      text-align: center;
       box-sizing: border-box;
       padding: .1cm;
     }

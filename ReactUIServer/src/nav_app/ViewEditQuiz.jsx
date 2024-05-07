@@ -19,7 +19,9 @@ export const ViewEditQuiz = ({set_view,quiz,quizInd})=>{
     const [flag, set_flag] = useState(false)
     const [focus, set_focus] = useState(-1)
     const {state} = useLocation()
-    quiz = state?.quiz
+    state?.qInd? quizInd = state.qInd : null
+    state?.quiz? quiz = state.quiz : null
+    console.log(quizInd, quiz);
 
     if (!quiz) {
         return <Denied/>
@@ -27,16 +29,19 @@ export const ViewEditQuiz = ({set_view,quiz,quizInd})=>{
         let navigate = useNavigate()
 
         function update() {
+            console.log(quizInd);
             console.log('qqq',user.quizzes[quizInd]);
             user.quizzes[quizInd] = quiz
             console.log('qqq1',user.quizzes[quizInd]);
             local_store_user(user)
+            state? (state.qInd = quizInd, state.quiz = quiz):null
             set_flag(!flag)
         }
         console.log('quiz',quiz);
     
         return(
             <div className="ViewQuestionList">
+                <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
                 <input value={quiz.title} onChange={v=>{
                     quiz.title = v.target.value
                     update()
@@ -74,10 +79,10 @@ export const ViewEditQuiz = ({set_view,quiz,quizInd})=>{
                     <button onClick={()=>{
                         downloadObj(quiz)
                     }}>
-                        download
+                        <span class="material-symbols-outlined">download</span>
                     </button>
                     <label htmlFor="file-input">
-                        upload
+                    <span class="material-symbols-outlined">upload</span>
                     </label>
                     <input style={{display:"none"}} id="file-input" type="file" onChange={(e)=>{
                         let input = e.target;
