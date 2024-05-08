@@ -56,6 +56,6 @@ export const ViewProfile = (args) => {
                     window.location.href = '/login'
                 }
             })
-        }}>log out</button>
+        }} className='big'>log out</button>
     </div>;
 };

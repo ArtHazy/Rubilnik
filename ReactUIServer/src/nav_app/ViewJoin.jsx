@@ -24,9 +24,20 @@ export const ViewJoin = (args) => {
     user || guest ? null : guest = {}
     user && guest ? guest = null : null
 
+    let keyInputContainer = document.createElement('div')
+    let inputs = new Array(limits.roomKeyLength).fill( function(){
+        return <input type="text" maxLength={1} style={{textTransform:'uppercase', margin:'.1cm',width:'.9cm', height:'1.3cm', fontSize:'.6cm'}} onChange={(e)=>{
+            e.target.value.length==1? e.target.nextElementSibling?.focus() : null
+            e.target.value.length==0? e.target.previousElementSibling?.focus() : null
+        }}/>
+    }())
+    keyInputContainer.append(inputs)
 
+    console.log(inputs);
+    let inputl = new Array(4).fill(null)
     return (
         <div className='ViewJoin vstack'>
+            
             <div>Name</div>
             <div className="spacer-default" />
 
@@ -39,13 +50,23 @@ export const ViewJoin = (args) => {
             <div>Room</div>
             <div className="spacer-default" />
 
-            <input id='key-input' placeholder="room key" minLength={limits.roomKeyLength} maxLength={limits.roomKeyLength} />
+            <div id="roomKeyInputs" className='hstack'>{inputs}</div>
+
+            {/* <input id='key-input' placeholder="room key" minLength={limits.roomKeyLength} maxLength={limits.roomKeyLength} /> */}
             <div className="spacer-default" />
 
-            <button onClick={()=>{
+            <button className='big' onClick={()=>{
                 guest?.name === ''? guest.name = 'faceless' : null
                 rerender()
-                navigate(`/play/${document.getElementById('key-input').value}`)
+                // retrieve key
+                let roomKey = '';
+                let keyInputs = document.getElementById('roomKeyInputs').childNodes
+                keyInputs.forEach((val)=>{roomKey+=val.value})
+                if (roomKey.length != limits.roomKeyLength) { alert('Invalid room key length')}
+                else {navigate(`/play/${roomKey}`)}
+
+                
+                //navigate(`/play/${document.getElementById('key-input').value}`)
             }}>Join</button>
         </div>
     );

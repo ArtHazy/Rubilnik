@@ -89,8 +89,14 @@ html,body,#root {
     @include vstack();
     align-items: center;
   }
+  .hstack {@include hstack()}
+  .vstack {@include vstack()}
 
   button {
+    &.big{
+      min-width: 2cm;
+      padding: 8px;
+    }
     padding: .1cm;
     overflow-wrap: break-word;
     overflow: hidden;
@@ -107,8 +113,12 @@ html,body,#root {
       color: var(--color-dark);
     }
   }
+  input[type="text"]{
+    &:focus{outline: solid 2px var(--color-split1); outline-offset: 2px}
+  }
   input, select{
     @include max-width-30-cm();
+    border: solid var(--color-gray2);
     font-family: inherit;
     text-align: center;
     background: var(--color-gray1);
@@ -299,6 +309,7 @@ html,body,#root {
     @include view();
   }
   .ViewQuestionEdit{
+    
     position: relative;
     button.add-question {
       @include center-with-margin();
@@ -308,6 +319,7 @@ html,body,#root {
   .ViewQuestionList, .ViewQuestionEdit{
     .grid-questionList, .grid-choicesList{
       @include grid();
+      max-width: 12cm;
       // @include view();
       flex-shrink: 0;
       
