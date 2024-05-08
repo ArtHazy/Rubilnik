@@ -137,7 +137,7 @@ app.post('/user/quizzes',(req,res)=>{
 app.post('/user/verify',(req,res)=>{
   reqNotifier(req)
 })
-app.get('/checkRoomAvailability',(req,res)=>{
+app.post('/checkRoomAvailability',(req,res)=>{
   reqNotifier(req)
   let roomId = req.body.roomId
   let room = io.sockets.adapter.rooms.get(roomId)
