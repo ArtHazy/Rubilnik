@@ -61,7 +61,7 @@ async function clearDB(){
 // clearDB()
 var userIds = new IdTree(4)
 
-initSocket(server,app)
+let io = initSocket(server,app)
 
 
 app.post('/user/verify',(req,res)=>{
@@ -137,4 +137,10 @@ app.post('/user/quizzes',(req,res)=>{
 app.post('/user/verify',(req,res)=>{
   reqNotifier(req)
 })
-
+app.get('/checkRoomAvailability',(req,res)=>{
+  reqNotifier(req)
+  let roomId = req.body.roomId
+  let room = io.sockets.adapter.rooms.get(roomId)
+  if (room) {res.status(200).send()} 
+  else {res.status(404).send()}
+})
