@@ -4,10 +4,7 @@ import { Quiz } from '../classes.mjs';
 import React from 'react';
 import { ViewActions } from './Controls';
 import add_svg from '../assets/add.svg'
-import delete_svg from '../assets/delete.svg'
-import { ViewEditQuiz } from './ViewEditQuiz';
 import { useNavigate } from 'react-router-dom';
-import { callView } from "./App";
 
 /**
  * @param {{set_view}} 

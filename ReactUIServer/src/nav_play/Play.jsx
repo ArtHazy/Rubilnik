@@ -4,47 +4,29 @@ import bg_w from '../assets/bg_w.png';
 import bg_b from '../assets/bg_b.png';
 import ViewLobby from "./ViewLobby";
 import { useEffect, useState } from "react";
-import ViewResult from "./ViewResult";
+import {ViewResult} from "./ViewResult";
 import { io } from "socket.io-client";
 import { SERVER_URL } from "../main";
 import ViewGame from "./ViewGame";
 
 
 
-const Play = () => {
+export const Play = () => {
   const {state} = useLocation()
-  //console.log('render');
-
-  const [gameState, setGameState] = useState('lobby')
   const isHost = state? true: false
-  
-  
+  const [gameState, setGameState] = useState('lobby')
   const [socket, setSocket] = useState(null)
-  const [count, setCount] = useState(0)
-  
   const { roomId } = useParams()
-  
   const quiz = state?.quiz
   const [roommates, setRoommates] = useState({})
-
-  const [usersChoices, setUsersChoices] = useState({})
   const [joined, setJoined] = useState(false)
-  
-
-
-
   let user = JSON.parse(localStorage.getItem('self-user'))
-  console.log('user', user);
   let guest = JSON.parse(localStorage.getItem('self-guest'))
-
-  
-  
-  
 
 
   console.log(socket)
   useEffect(() =>{
-
+    let usersChoices = {}
     let socket = io(SERVER_URL)
     setSocket(socket)
 
@@ -63,7 +45,7 @@ const Play = () => {
       setRoommates(roommates)
     });
   
-    socket.on('bark', ({msg}) => {alert(msg)});
+    socket.on('bark', ({msg}) => { setTimeout( ()=>{alert(msg)},1 ) });
     
     socket.on('create',()=>{
       //alert('room created')
@@ -95,13 +77,13 @@ const Play = () => {
     }) : null
 
     // map player's choices for later evaluation
-    isHost? 
+    if (isHost){
       socket.on('choice',({userId, questionInd, choices})=>{
+        !usersChoices[userId]? usersChoices[userId] = [] : null
+        usersChoices[userId][questionInd] = choices
         console.log('usersChoices:', usersChoices)
-        !usersChoices[userId] ? usersChoices[userId] = [] : usersChoices[userId][questionInd] = choices
       })
-    : null
-
+    }
 
     return () => {
       socket.off();
@@ -110,9 +92,6 @@ const Play = () => {
 
   }, []);
 
-
-
-  
 
   console.log(socket);
   if (!socket || !socket.connected) 
@@ -129,28 +108,19 @@ const Play = () => {
       {joined && gameState === 'finished' ? <ViewResult isHost={isHost} socket={socket} roomId={roomId} quiz={quiz} usersChoices={usersChoices} roommates={roommates} /> : null}
 
       
-
-
-
-      {/* <button onClick={()=>socket.emit('bark', {userName: user?.name | guest?.name })}>
-        bark
-      </button>
-      <button onClick={()=>{setCount(count+1)}}>{count}</button> */}
-
-      <div className="connected-counter"> connected players: { Object.keys(roommates).length } </div>
-
+      <button onClick={()=>{
+        socket.emit('bark', {userName: user?.name, guestName: guest?.name})
+      }}>bark</button>
+      <div className="connected-counter"> 
+        connected players: { Object.keys(roommates).length } 
+      </div>
       <div className="hstack display-connected">
-
         { Object.keys(roommates).map((userId) =>
           <div className="hstack user_card ">
             <div> {roommates[userId]?.name}</div>
           </div>
         )}
-
         {console.log(roommates)}
       </div>
-
     </div>
 }
-
-export default Play

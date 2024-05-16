@@ -18,6 +18,13 @@ export function initSocket(server){
             logRooms()
         })
 
+        socket.on('bark',({userName, guestName})=>{
+            let name = userName | guestName
+            socket.rooms.forEach((roomId)=>{
+                io.to(roomId).emit('bark',{msg:name+' barked'})
+            })
+        })
+
         socket.on('join', ({roomId, userName, userId}) => {
             // parse arrays from mobile JSON ))))))))))))))
                 if (Array.isArray(roomId)){roomId = roomId[0];}

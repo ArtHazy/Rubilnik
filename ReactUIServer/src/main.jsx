@@ -6,20 +6,18 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import Play from './nav_play/Play.jsx';
+import {Play} from './nav_play/Play.jsx';
 import { ViewLogin } from './nav_authorizaztion/ViewLogin.jsx';
 import { ViewRegister } from './nav_authorizaztion/ViewRegister.jsx';
 import { ViewJoin } from './nav_app/ViewJoin.jsx';
 import { ViewEditQuiz } from './nav_app/ViewEditQuiz.jsx';
 
+// import {config} from 'dotenv'
+// config()
+// config()
+// export const serverUrl = process.env.REACT_APP_SERVER_URL
 
-export const SERVER_URL = "http://192.168.0.7:3000"
-/**
- * @param {()=>React.JSX.Element} jsxElement 
- * @param {string} name 
- * @returns 
- */
-
+export const SERVER_URL = "http://192.168.249.51:3000"
 
 const router = createBrowserRouter([
   {
