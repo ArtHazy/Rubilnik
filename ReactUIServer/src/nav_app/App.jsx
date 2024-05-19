@@ -25,7 +25,7 @@ function App() {
 
         <div className="Header">
           <div className='header-content-container'>
-            <div style={{fontSize: '1.2em'}}>
+            <div>
               {view.name}
             </div>
           </div>

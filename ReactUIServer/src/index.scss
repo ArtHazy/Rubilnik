@@ -4,7 +4,7 @@
   --color-acc: rgba(150, 180, 240);
   --color-acc-faded: rgba(150, 180, 240, 0.8);
   //--color-bg: rgb(41, 43, 61);
-  --color-dark: #242424;
+  --color-bg: #242424;
   --color-gray1: #464646;
   --color-gray2: #6b6b6b;
   --color-light: #D9D9D9;
@@ -17,13 +17,15 @@
   --color-acc3: rgb(184, 59, 94);
   --color-acc4: rgb(217, 217, 217);
 
-  --color-gold: #e8af4b;
-  --color-split1: #0FD4CD;
-  --color-split2: rgb(214, 191, 129);
+  --color-first-place: #C5B078;
+  --color-second-place: #B0B0B0;
+  --color-highlight-1: #0FD4CD;
+  --color-highlight-2: #D6BF81;
 
 }
 
 html,body,#root {
+  font-family: 'Russo One', sans-serif;
   height: 100vh;
   width: 100vw;
   /* Hide scrollbar for Chrome, Safari and Opera */
@@ -34,11 +36,10 @@ html,body,#root {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 
-  font-family: 'Russo One', sans-serif;
   margin: 0;
   box-sizing: border-box;
   //overflow: hidden;
-  background-color: var(--color-dark);
+  background-color: var(--color-bg);
 
   // parent must be positioned relatively (not initial)
   @mixin center-with-margin{ 
@@ -53,7 +54,7 @@ html,body,#root {
     height: fit-content;
     justify-content: start;
   }
-  @mixin hstack {
+@mixin hstack {
     display: flex;
     flex-direction: row;
     justify-content: safe center;
@@ -84,6 +85,14 @@ html,body,#root {
   @mixin max-width-30-cm{
     max-width: 30cm;
   }
+  @mixin simple-text {
+    font-size: 1em;
+    font-weight: 400;
+    font-family: 'Russo One', sans-serif; 
+    text-transform: uppercase;
+    // @include dynamic-font();
+  }
+
 
   .login-block, .register-block {
     @include vstack();
@@ -92,11 +101,27 @@ html,body,#root {
   .hstack {@include hstack()}
   .vstack {@include vstack()}
 
+  @mixin _330x70{
+    min-width: 330;
+    height: 70;
+  }
+  @mixin dynamic-font{
+    font-size: max(2vw, 1em);
+  }
+  //!
   button {
+    .design{
+      @include _330x70();
+      background: var(--color-bg);
+      color: var(--color-highlight-2);
+      border: 2px var(--color-highlight-2);
+    }
+
     &.big{
       min-width: 2cm;
       padding: 8px;
     }
+
     padding: .1cm;
     overflow-wrap: break-word;
     overflow: hidden;
@@ -104,17 +129,26 @@ html,body,#root {
     font-family: inherit;
     background-color: var(--color-light);
     fill: var(--color-light);
-    color: var(--color-dark);
+    color: var(--color-bg);
     width: fit-content;
     border-radius: .15cm;
     cursor: pointer;
 
-    div,p,h1,h2,h3,h4,h5,h6 {
-      color: var(--color-dark);
+
+    // div,p,h1,h2,h3,h4,h5,h6 {
+    //   color: var(--color-bg);
+    // }
+  }
+  //!
+  input{
+    &.design{
+      @include _330x70();
+      color: var(--color-second-place);
     }
   }
+
   input[type="text"]{
-    &:focus{outline: solid 2px var(--color-split1); outline-offset: 2px}
+    &:focus{outline: solid 2px var(--color-highlight-1); outline-offset: 2px}
   }
 
 
@@ -125,7 +159,7 @@ html,body,#root {
     text-align: center;
     background: var(--color-gray1);
     color: var(--color-light);
-    fill: var(--color-dark);
+    fill: var(--color-bg);
     padding: 4px !important;
     border-radius: 8px;
     box-sizing: border-box;
@@ -139,8 +173,10 @@ html,body,#root {
   }
 
   div,p,h1,h2,h3,h4,h5,h6 {
-    color: var(--color-light);
+    @include simple-text();
+    color: invert($color: var(--color-bg));
   }
+
   .hstack {
     @include hstack();
   }
@@ -160,10 +196,10 @@ html,body,#root {
       font-size: 2em;
     }
     .log,.reg{
-      color: var(--color-split1);
+      color: var(--color-highlight-1);
     }
     .in, .ister{
-      color: var(--color-split2);
+      color: var(--color-highlight-2);
     }
     a{
       color: hsla(0%,0,100,50%);
@@ -190,7 +226,7 @@ html,body,#root {
       @include hstack();
       color: white;
       fill: white;
-      background: var(--color-dark);
+      background: var(--color-bg);
       padding: 8px;
       box-sizing: border-box;
       // border-radius: 8px;
@@ -201,7 +237,7 @@ html,body,#root {
 
   .controls {
     @include hstack();
-    border: 2px solid var(--color-dark);
+    border: 2px solid var(--color-bg);
     box-sizing: border-box;
     width: 100%;
     max-width: 6cm;
@@ -212,7 +248,7 @@ html,body,#root {
     justify-content: space-evenly;
     align-items: center;
     label {
-      color: var(--color-dark);
+      color: var(--color-bg);
       cursor: pointer;
     }
     button, label {
@@ -260,7 +296,7 @@ html,body,#root {
       }
 
       button.active{
-        background: var(--color-dark);
+        background: var(--color-bg);
         fill: var(--color-light);
         color: var(--color-light);
         img.icon{
@@ -338,7 +374,7 @@ html,body,#root {
         justify-items: center;
 
         .index{
-          color: var(--color-dark);
+          color: var(--color-bg);
           z-index: 1;
           grid-row: 1 / 2;
           grid-column: 1 / 2;
@@ -429,7 +465,7 @@ html,body,#root {
         position: absolute;
         right: .5cm;
         bottom: .5cm;
-        color: var(--color-dark);
+        color: var(--color-bg);
         padding: .2cm;
       }
 
@@ -643,7 +679,7 @@ html,body,#root {
           max-width: 16cm;
           @mixin tile{
             box-sizing: border-box;
-            color: var(--color-dark);
+            color: var(--color-bg);
             background-color: #B0B0B0;
             padding: .2cm;
             width: 100%;
@@ -663,7 +699,7 @@ html,body,#root {
             @include tile();
           }
           .first{
-            background-color: var(--color-gold);
+            background-color: var(--color-first-place);
           }
         }
       }
@@ -710,7 +746,7 @@ html,body,#root {
     } 
     
     .letter {
-      color: var(--color-dark);
+      color: var(--color-bg);
       position: absolute;
       top: 0;
       right: 0;
@@ -726,10 +762,10 @@ html,body,#root {
       border-radius: 5px;
       font-size: 1.7em;
       .rubil{
-        color: var(--color-split1);
+        color: var(--color-highlight-1);
       }
       .nik{
-        color: var(--color-split2);
+        color: var(--color-highlight-2);
       }
     }
   }
